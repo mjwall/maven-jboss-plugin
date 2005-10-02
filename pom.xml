@@ -16,6 +16,7 @@
             <email>jgenender@apache.org</email>
         </developer>
     </developers>
+    <!--
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -29,6 +30,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    -->
     <reporting>
         <plugins>
             <plugin>
