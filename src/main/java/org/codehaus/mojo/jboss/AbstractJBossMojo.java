@@ -34,7 +34,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
     /**
      * The location to JBoss Home.  This is a required configuration parameter.
      *
-     * @parameter default-value="NONE" 
+     * @parameter expression="NONE"
      * @required
      */
     protected String jbossHome;
@@ -42,18 +42,21 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
     /**
      * The server name
      *
-     * @parameter default-value="default"
+     * @parameter expression="default"
      * @required
      */
     protected String serverName;
 
+    protected void checkConfig() throws MojoExecutionException {
+        if (jbossHome ==null || jbossHome.equals("NONE")) {
+            throw new MojoExecutionException("jbossHome configuration parameter is not set.");
+        }
+    }
+
     protected void launch(String fName, String params) throws MojoExecutionException {
 
         try{
-
-            if (jbossHome ==null || jbossHome.equals("NONE")) {
-                throw new MojoExecutionException("jbossHome configuration parameter is not set.");
-            }
+            checkConfig();
             String osName = System.getProperty("os.name");
             Runtime runtime = Runtime.getRuntime();
 

@@ -36,7 +36,7 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
     /**
      * The port jboss is running on
      *
-     * @parameter default-value="8080"
+     * @parameter expression="8080"
      * @required
      */
     protected int port;
@@ -44,7 +44,7 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
     /**
      * The host jboss is running on
      *
-     * @parameter default-value="localhost"
+     * @parameter expression="localhost"
      * @required
      */
     protected String hostName;

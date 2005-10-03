@@ -29,7 +29,7 @@ public class UndeployMojo extends AbstractDeployerMojo {
     /**
      * The undeployment URL
      *
-     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0="
+     * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&amp;methodName=undeploy&amp;argType=java.net.URL&amp;arg0="
      * @required
      */
     protected String undeployUrlPath;
