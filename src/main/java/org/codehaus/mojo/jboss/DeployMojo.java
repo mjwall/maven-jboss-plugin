@@ -29,7 +29,7 @@ public class DeployMojo extends AbstractDeployerMojo {
     /**
      * The deployment URL
      *
-     * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&amp;name=jboss.system:service%3DMainDeployer&methodName=deploy&amp;argType=java.net.URL&amp;arg0="
+     * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0="
      * @required
      */
     protected String deployUrlPath;
