@@ -24,7 +24,6 @@ How To Use
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jboss-maven-plugin</artifactId>
-                <version>1.0</version>
                 <configuration>
                     <jbossHome>/Library/JBoss/4.0.2</jbossHome>
                     <port>9090</port>

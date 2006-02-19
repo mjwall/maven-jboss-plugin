@@ -32,9 +32,10 @@ import java.net.URL;
 public abstract class AbstractJBossMojo extends AbstractMojo {
 
     /**
-     * The location to JBoss Home.  This is a required configuration parameter.
+     * The location to JBoss Home.  This is a required configuration parameter 
+     * (unless JBOSS_HOME is set).
      *
-     * @parameter expression="NONE"
+     * @parameter expression="ENV"
      * @required
      */
     protected String jbossHome;
