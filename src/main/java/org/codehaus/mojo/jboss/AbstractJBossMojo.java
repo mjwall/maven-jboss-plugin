@@ -23,18 +23,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by IntelliJ IDEA.
- * User: jeffgenender
- * Date: Oct 1, 2005
- * Time: 12:12:56 PM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56
+ * PM To change this template use File | Settings | File Templates.
  */
 public abstract class AbstractJBossMojo extends AbstractMojo {
 
     /**
-     * The location to JBoss Home.  This is a required configuration parameter 
+     * The location to JBoss Home. This is a required configuration parameter
      * (unless JBOSS_HOME is set).
-     *
+     * 
      * @parameter expression="ENV"
      * @required
      */
@@ -42,36 +39,51 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
 
     /**
      * The server name
-     *
+     * 
      * @parameter expression="default"
      * @required
      */
     protected String serverName;
 
     protected void checkConfig() throws MojoExecutionException {
-        if (jbossHome ==null || jbossHome.equals("NONE")) {
-            throw new MojoExecutionException("jbossHome configuration parameter is not set.");
+        if (jbossHome == null || jbossHome.equals("ENV")) {
+            jbossHome = System.getenv("JBOSS_HOME");
+        }
+
+        if (jbossHome == null) {
+            throw new MojoExecutionException(
+                    "Neither JBOSS_HOME nor the jbossHome configuration parameter is set!");
         }
     }
 
-    protected void launch(String fName, String params) throws MojoExecutionException {
+    protected void launch(String fName, String params)
+            throws MojoExecutionException {
 
-        try{
+        try {
             checkConfig();
             String osName = System.getProperty("os.name");
             Runtime runtime = Runtime.getRuntime();
 
             Process p = null;
-            if (osName.startsWith("Windows")){
-                String command[] = {"cmd.exe", "/C", "cd " + jbossHome + "\\bin & " + fName + ".bat " + " " + params };
+            if (osName.startsWith("Windows")) {
+                String command[] = {
+                        "cmd.exe",
+                        "/C",
+                        "cd " + jbossHome + "\\bin & " + fName + ".bat " + " "
+                                + params };
                 p = runtime.exec(command);
             } else {
-                String command[] = {"sh", "-c", "cd " + jbossHome + "/bin; ./" + fName + ".sh " + " " + params};
+                String command[] = {
+                        "sh",
+                        "-c",
+                        "cd " + jbossHome + "/bin; ./" + fName + ".sh " + " "
+                                + params };
                 p = runtime.exec(command);
             }
 
-        } catch (Exception e){
-            throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
+        } catch (Exception e) {
+            throw new MojoExecutionException("Mojo error occurred: "
+                    + e.getMessage(), e);
         }
     }
 }
