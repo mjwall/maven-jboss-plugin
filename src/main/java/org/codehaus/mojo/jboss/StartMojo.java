@@ -19,7 +19,7 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Starts JBoss in the background
+ * Starts JBoss
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal start

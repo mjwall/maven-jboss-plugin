@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56
@@ -36,6 +37,11 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
      * @required
      */
     protected String jbossHome;
+
+    /**
+     * @parameter expression="${project.build.directory}/jboss
+     */
+    protected File outputDirectory;
 
     /**
      * The server name
@@ -69,15 +75,15 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
                 String command[] = {
                         "cmd.exe",
                         "/C",
-                        "cd " + jbossHome + "\\bin & " + fName + ".bat " + " "
-                                + params };
+                        "cd " + outputDirectory.getAbsolutePath() + "\\bin & "
+                                + fName + ".bat " + " " + params };
                 p = runtime.exec(command);
             } else {
                 String command[] = {
                         "sh",
                         "-c",
-                        "cd " + jbossHome + "/bin; ./" + fName + ".sh " + " "
-                                + params };
+                        "cd " + outputDirectory.getAbsolutePath() + "/bin; ./"
+                                + fName + ".sh " + " " + params };
                 p = runtime.exec(command);
             }
 
