@@ -1,0 +1,5 @@
+#! /bin/sh
+
+# Shell script that stops the jboss server
+
+/Users/jsmith/projects/ticketswap/trunk/external/jboss/bin/shutdown.sh -S
