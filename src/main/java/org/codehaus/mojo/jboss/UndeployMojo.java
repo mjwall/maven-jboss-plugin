@@ -36,7 +36,7 @@ public class UndeployMojo extends AbstractDeployerMojo {
 
     public void execute() throws MojoExecutionException {
         getLog().info("Undeploying " + fileName + " from JBoss.");
-        String url = "http://" + hostName + ":" + port + undeployUrlPath + "file:" + fileName;
+        String url = "http://" + hostName + ":" + port + undeployUrlPath + fileName;
         doURL(url);
     }
 }

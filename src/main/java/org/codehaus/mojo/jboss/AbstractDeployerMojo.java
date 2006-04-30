@@ -62,7 +62,7 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 	/**
 	 * The name of the file or directory to deploy or undeploy.
 	 * 
-	 * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
+	 * @parameter expression="file:${project.build.directory}/${project.build.finalName}.${project.packaging}"
 	 * @required
 	 */
 	protected String fileName;
@@ -152,4 +152,5 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 		return "Basic "
 				+ new String(Base64.encodeBase64(buffer.toString().getBytes()));
 	}
+    
 }

@@ -250,8 +250,8 @@ public class ConfigureJBossMojo extends AbstractJBossMojo
 
     private void buildWindowsScripts(File binDir, VelocityEngine engine, VelocityContext context) throws MojoExecutionException
     {
-        File runScript = new File(binDir + File.separator + "run.sh");
-        File shutdownScript = new File(binDir + File.separator + "shutdown.sh");
+        File runScript = new File(binDir + File.separator + "run.bat");
+        File shutdownScript = new File(binDir + File.separator + "shutdown.bat");
 
         try
         {

@@ -36,7 +36,7 @@ public class DeployMojo extends AbstractDeployerMojo {
 
     public void execute() throws MojoExecutionException {
         getLog().info("Deploying " + fileName + " to JBoss.");
-        String url = "http://" + hostName + ":" + port + deployUrlPath + "file:" + fileName;
+        String url = "http://" + hostName + ":" + port + deployUrlPath + fileName;
         doURL(url);
     }
 }
