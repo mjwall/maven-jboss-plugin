@@ -88,6 +88,13 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 
 	protected void doURL(String url) throws MojoExecutionException {
 		try {
+
+            //Fix the ejb packaging to a jar
+            if (url.toLowerCase().endsWith("ejb")){
+                url = url.substring(0, url.length() - 3) + "jar";
+            }
+
+            getLog().debug("URL="+url);
 			HttpURLConnection connection = (HttpURLConnection) new URL(url)
 					.openConnection();
 			connection.setInstanceFollowRedirects(false);
