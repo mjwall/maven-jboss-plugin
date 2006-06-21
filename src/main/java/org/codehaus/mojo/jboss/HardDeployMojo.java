@@ -42,7 +42,16 @@ public class HardDeployMojo extends AbstractJBossMojo {
 
         checkConfig();
         try{
-            File src = new File(fileName);
+
+            //Fix the ejb packaging to a jar
+            String fixedFile = null;
+            if (fileName.toLowerCase().endsWith("ejb")){
+                fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
+            } else {
+                fixedFile = fileName;
+            }
+
+            File src = new File(fixedFile);
             File dst = new File(jbossHome + "/server/" + serverName + "/deploy/" + src.getName());
             getLog().info("Copying " + src.getAbsolutePath() + " to " + dst.getAbsolutePath());
             copy(src, dst);

@@ -20,8 +20,17 @@ public class ReDeployMojo extends AbstractDeployerMojo {
     protected String redeployUrlPath;
 
     public void execute() throws MojoExecutionException {
-        getLog().info("Reploying " + fileName + " to JBoss.");
-        String url = "http://" + hostName + ":" + port + redeployUrlPath + fileName;
+
+        //Fix the ejb packaging to a jar
+        String fixedFile = null;
+        if (fileName.toLowerCase().endsWith("ejb")){
+            fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
+        } else {
+            fixedFile = fileName;
+        }
+
+        getLog().info("Reploying " + fixedFile + " to JBoss.");
+        String url = "http://" + hostName + ":" + port + redeployUrlPath + fixedFile;
         doURL(url);
     }
 }

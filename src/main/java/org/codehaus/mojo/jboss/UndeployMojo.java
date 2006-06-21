@@ -35,8 +35,17 @@ public class UndeployMojo extends AbstractDeployerMojo {
     protected String undeployUrlPath;
 
     public void execute() throws MojoExecutionException {
-        getLog().info("Undeploying " + fileName + " from JBoss.");
-        String url = "http://" + hostName + ":" + port + undeployUrlPath + fileName;
+
+        //Fix the ejb packaging to a jar
+        String fixedFile = null;
+        if (fileName.toLowerCase().endsWith("ejb")){
+            fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
+        } else {
+            fixedFile = fileName;
+        }
+
+        getLog().info("Undeploying " + fixedFile + " from JBoss.");
+        String url = "http://" + hostName + ":" + port + undeployUrlPath + fixedFile;
         doURL(url);
     }
 }

@@ -19,6 +19,8 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
+import org.apache.commons.lang.SystemUtils;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.File;
@@ -53,6 +55,11 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
 
     protected void checkConfig() throws MojoExecutionException {
         if (jbossHome == null || jbossHome.equals("ENV")) {
+            if (SystemUtils.getJavaVersion() < 1.5)
+            {
+                throw new MojoExecutionException(
+                    "Neither JBOSS_HOME nor the jbossHome configuration parameter is set! Also, to save you the trouble, JBOSS_HOME cannot be read running a VM < 1.5, so set the jbossHome configuration parameter or use -D.");
+            }
             jbossHome = System.getenv("JBOSS_HOME");
         }
 
