@@ -24,6 +24,8 @@ import org.apache.commons.lang.SystemUtils;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56
@@ -58,7 +60,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
             if (SystemUtils.getJavaVersion() < 1.5)
             {
                 throw new MojoExecutionException(
-                    "Neither JBOSS_HOME nor the jbossHome configuration parameter is set! Also, to save you the trouble, JBOSS_HOME cannot be read running a VM < 1.5, so set the jbossHome configuration parameter or use -D.");
+                        "Neither JBOSS_HOME nor the jbossHome configuration parameter is set! Also, to save you the trouble, JBOSS_HOME cannot be read running a VM < 1.5, so set the jbossHome configuration parameter or use -D.");
             }
             jbossHome = System.getenv("JBOSS_HOME");
         }
@@ -70,7 +72,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
     }
 
     protected void launch(String fName, String params)
-            throws MojoExecutionException {
+        throws MojoExecutionException {
 
         try {
             checkConfig();
@@ -80,18 +82,20 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
             Process p = null;
             if (osName.startsWith("Windows")) {
                 String command[] = {
-                        "cmd.exe",
-                        "/C",
-                        "cd " + outputDirectory.getAbsolutePath() + "\\bin & "
-                                + fName + ".bat " + " " + params };
-                p = runtime.exec(command);
+                    "cmd.exe",
+                    "/C",
+                    "cd " + outputDirectory.getAbsolutePath() + "\\bin & "
+                        + fName + ".bat " + " " + params };
+                    p = runtime.exec(command);
+                    dump(p.getInputStream());
+                    dump(p.getErrorStream());
             } else {
                 String command[] = {
-                        "sh",
-                        "-c",
-                        "cd " + outputDirectory.getAbsolutePath() + "/bin; ./"
-                                + fName + ".sh " + " " + params };
-                p = runtime.exec(command);
+                    "sh",
+                    "-c",
+                    "cd " + outputDirectory.getAbsolutePath() + "/bin; ./"
+                        + fName + ".sh " + " " + params };
+                    p = runtime.exec(command);
             }
 
         } catch (Exception e) {
@@ -99,4 +103,19 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
                     + e.getMessage(), e);
         }
     }
+
+    protected void dump(final InputStream a_input) {
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    byte[] b = new byte[1000];
+                    while ((a_input.read(b)) != -1) {
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }
