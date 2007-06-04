@@ -15,6 +15,8 @@
  */
 package org.codehaus.mojo.jboss;
 
+import java.util.Iterator;
+
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
@@ -37,15 +39,22 @@ public class DeployMojo extends AbstractDeployerMojo {
     public void execute() throws MojoExecutionException {
 
         //Fix the ejb packaging to a jar
-        String fixedFile = null;
-        if (fileName.toLowerCase().endsWith("ejb")){
-            fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
-        } else {
-            fixedFile = fileName;
-        }
 
-        getLog().info("Deploying " + fixedFile + " to JBoss.");
-        String url = "http://" + hostName + ":" + port + deployUrlPath + fixedFile;
-        doURL(url);
+        if (fileNames == null) return;
+        Iterator iter = fileNames.iterator();
+        while (iter.hasNext()) {
+
+            String fileName = (String)iter.next();
+            String fixedFile = null;
+            if (fileName.toLowerCase().endsWith("ejb")){
+                fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
+            } else {
+                fixedFile = fileName;
+            }
+
+            getLog().info("Deploying " + fixedFile + " to JBoss.");
+            String url = "http://" + hostName + ":" + port + deployUrlPath + fixedFile;
+            doURL(url);
+        }
     }
 }

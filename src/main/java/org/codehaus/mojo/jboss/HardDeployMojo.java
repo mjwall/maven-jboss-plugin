@@ -18,8 +18,12 @@ package org.codehaus.mojo.jboss;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
-import java.io.*;
-import java.nio.channels.FileChannel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Hard deploys the file by copying it to the $JBOSS_HOME/server/[serverName]/deploy directory

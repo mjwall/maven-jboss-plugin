@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.maven.artifact.manager.WagonManager;
@@ -62,10 +63,9 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 	/**
 	 * The name of the file or directory to deploy or undeploy.
 	 * 
-	 * @parameter expression="file:${project.build.directory}/${project.build.finalName}.${project.packaging}"
-	 * @required
+     * @parameter 
 	 */
-	protected String fileName;
+	protected List fileNames;
 
 	/**
 	 * The Maven Wagon manager to use when obtaining server authentication
