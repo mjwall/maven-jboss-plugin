@@ -84,7 +84,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
                 String command[] = {
                     "cmd.exe",
                     "/C",
-                    "cd " + outputDirectory.getAbsolutePath() + "\\bin & "
+                    "cd " + jbossHome + "\\bin & "
                         + fName + ".bat " + " " + params };
                     p = runtime.exec(command);
                     dump(p.getInputStream());
@@ -93,7 +93,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
                 String command[] = {
                     "sh",
                     "-c",
-                    "cd " + outputDirectory.getAbsolutePath() + "/bin; ./"
+                    "cd " + jbossHome + "/bin; ./"
                         + fName + ".sh " + " " + params };
                     p = runtime.exec(command);
             }
