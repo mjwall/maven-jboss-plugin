@@ -89,6 +89,8 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 	protected void doURL(String url) throws MojoExecutionException {
 		try {
 
+			url = url.replaceAll("\\s", "%20");
+			
             getLog().debug("url = " + url);
 
 			HttpURLConnection connection = (HttpURLConnection) new URL(url)
