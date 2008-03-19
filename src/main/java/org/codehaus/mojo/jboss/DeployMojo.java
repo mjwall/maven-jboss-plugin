@@ -20,16 +20,15 @@ import java.util.Iterator;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- *  Deploys a directory or file to JBoss via JMX
+ *  Deploys a directory or file to JBoss via JMX.
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal deploy
- * @description Maven 2 JBoss plugin
  */
 public class DeployMojo extends AbstractDeployerMojo {
 
     /**
-     * The deployment URL
+     * The deployment URL.
      *
      * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0="
      * @required

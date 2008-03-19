@@ -26,11 +26,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Hard deploys the file by copying it to the $JBOSS_HOME/server/[serverName]/deploy directory
+ * Hard deploys the file by copying it to the
+ * <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal harddeploy
- * @description Maven 2 JBoss plugin
  */
 public class HardDeployMojo extends AbstractJBossMojo {
 

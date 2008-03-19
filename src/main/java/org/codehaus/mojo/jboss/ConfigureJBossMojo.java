@@ -27,10 +27,10 @@ import java.io.FileWriter;
 import java.util.Properties;
 
 /**
- * ConfigureJBossMojo
+ * Allows you to configure JBoss installation by overlaying a conf, lib and
+ * deploy directory.
+ *
  * @goal configure
- * @description Allows you to configure JBoss installation by overlaying a conf, 
- * lib and deploy directory.
  */
 public class ConfigureJBossMojo extends AbstractJBossMojo
 {
@@ -39,19 +39,22 @@ public class ConfigureJBossMojo extends AbstractJBossMojo
     private File jbossHomeDir;
 
     /**
-     * The directory for overrides to the conf diretory
+     * The directory for overrides to the conf directory.
+     *
      * @parameter expression="${basedir}/jboss/conf"
      */
     private File confDir;
 
     /**
-     * The directory for overrides to the lib diretory
+     * The directory for overrides to the lib directory.
+     *
      * @parameter expression="${basedir}/jboss/lib"
      */
     private File libDir;
 
     /**
-     * The directory for overrides to the deploy diretory
+     * The directory for overrides to the deploy directory.
+     * 
      * @parameter expression="${basedir}/jboss/conf"
      */
     private File deployDir;

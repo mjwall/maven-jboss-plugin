@@ -19,11 +19,10 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Stops JBoss
+ * Stops JBoss.
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal stop
- * @description Maven 2 JBoss plugin
  */
 public class StopMojo extends AbstractJBossMojo {
 

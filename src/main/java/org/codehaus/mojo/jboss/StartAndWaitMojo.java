@@ -8,15 +8,14 @@ import javax.naming.NamingException;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Start JBoss and wait until server is started
+ * Starts JBoss and waits until the server is started.
  * 
  * @author <a href="mailto:jc7442@yahoo.fr">J-C</a>
  * @goal startAndWait
- * @description Maven 2 JBoss plugin
  */
 public class StartAndWaitMojo extends StartMojo {
     /**
-     * Number maximum of retry to JBoss jmx MBean connection
+     * Maximum number of retries to JBoss JMX MBean connection.
      * 
      * @parameter expression="3"
      * @required
@@ -24,8 +23,8 @@ public class StartAndWaitMojo extends StartMojo {
     protected int retry;
 
     /**
-     * Timeout in ms to start the application server (once jmx MBean connection as
-     * been readched)
+     * Timeout in ms to start the application server (once JMX MBean connection
+     * has been reached).
      * 
      * @parameter expression="20000"
      * @required
@@ -33,7 +32,7 @@ public class StartAndWaitMojo extends StartMojo {
     protected int timeout;
 
     /**
-     * The port for the naming service
+     * The port for the naming service.
      * 
      * @parameter expression="1099"
      * @required
@@ -41,7 +40,7 @@ public class StartAndWaitMojo extends StartMojo {
     protected String namingPort;
 
     /**
-     * The host jboss is running on
+     * The host JBoss is running on.
      * 
      * @parameter expression="localhost"
      * @required

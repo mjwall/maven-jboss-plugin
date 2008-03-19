@@ -20,16 +20,15 @@ import java.util.Iterator;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Undeploys a directory or file from JBoss via JMX
+ * Undeploys a directory or file from JBoss via JMX.
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal undeploy
- * @description Maven 2 JBoss plugin
  */
 public class UndeployMojo extends AbstractDeployerMojo {
 
     /**
-     * The undeployment URL
+     * The undeployment URL.
      *
      * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0="
      * @required
