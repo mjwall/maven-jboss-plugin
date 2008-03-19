@@ -34,7 +34,7 @@ import java.io.InputStream;
 public abstract class AbstractJBossMojo extends AbstractMojo {
 
     /**
-     * The location to JBoss Home. This is a required configuration parameter
+     * The location of JBoss Home. This is a required configuration parameter
      * (unless JBOSS_HOME is set).
      * 
      * @parameter expression="ENV"
@@ -48,7 +48,7 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
     protected File outputDirectory;
 
     /**
-     * The server name
+     * The server name.
      * 
      * @parameter expression="default"
      * @required

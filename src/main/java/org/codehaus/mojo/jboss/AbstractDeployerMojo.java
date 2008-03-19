@@ -45,7 +45,7 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 	private static final String DEFAULT_PASSWORD = "";
 
 	/**
-	 * The port jboss is running on
+	 * The port JBoss is running on.
 	 * 
 	 * @parameter expression="8080"
 	 * @required
@@ -53,7 +53,7 @@ public abstract class AbstractDeployerMojo extends AbstractMojo {
 	protected int port;
 
 	/**
-	 * The host jboss is running on
+	 * The host JBoss is running on.
 	 * 
 	 * @parameter expression="localhost"
 	 * @required
