@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- *  ReDeploys a directory or file to JBoss via JMX.
+ * ReDeploys a directory or file to JBoss via JMX.
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal redeploy
@@ -23,11 +23,14 @@ public class ReDeployMojo extends AbstractDeployerMojo {
     public void execute() throws MojoExecutionException {
 
         //Fix the ejb packaging to a jar
+        if (fileNames == null)
+            return;
+        
         Iterator iter = fileNames.iterator();
         while (iter.hasNext()) {
-            String fileName = (String)iter.next();
+            String fileName = (String) iter.next();
             String fixedFile = null;
-            if (fileName.toLowerCase().endsWith("ejb")){
+            if (fileName.toLowerCase().endsWith("ejb")) {
                 fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
             } else {
                 fixedFile = fileName;
