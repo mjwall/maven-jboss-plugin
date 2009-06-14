@@ -41,7 +41,7 @@ Usage
 </project>
 +------------------------------------------+
 
-  Using this is as simple as typing in mvn and one of the goals found {{{index.html}here}}, like so:
+  Using this is as simple as typing in mvn and one of the goals found {{{plugin-info.html}here}}, like so:
 
 +------------------------------------------+
 mvn jboss:deploy
