@@ -60,6 +60,11 @@ public class ConfigureJBossMojo extends AbstractJBossMojo
     private File deployDir;
 
     /**
+     * @parameter expression="${project.build.directory}/jboss
+     */
+    protected File outputDirectory;
+
+    /**
      * Constructs a ConfigureJBossMojo.
      */
     public ConfigureJBossMojo() {

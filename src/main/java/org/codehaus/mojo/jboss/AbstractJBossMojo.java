@@ -43,11 +43,6 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
     protected String jbossHome;
 
     /**
-     * @parameter expression="${project.build.directory}/jboss
-     */
-    protected File outputDirectory;
-
-    /**
      * The server name.
      * 
      * @parameter expression="default"

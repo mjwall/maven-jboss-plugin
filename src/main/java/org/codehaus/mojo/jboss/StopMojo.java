@@ -23,6 +23,8 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal stop
+ * @requiresProject false
+ * 
  */
 public class StopMojo extends AbstractJBossMojo {
 

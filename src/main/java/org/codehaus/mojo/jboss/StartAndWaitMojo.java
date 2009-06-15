@@ -12,6 +12,8 @@ import org.apache.maven.plugin.MojoExecutionException;
  * 
  * @author <a href="mailto:jc7442@yahoo.fr">J-C</a>
  * @goal startAndWait
+ * @requiresProject false
+ * 
  */
 public class StartAndWaitMojo extends StartMojo {
     /**
