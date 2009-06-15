@@ -97,18 +97,23 @@ public class HardDeployMojo extends AbstractJBossMojo {
         }
     }
 
-    private void copyFile(File src, File dst) throws IOException {
-        if (unpack) {
-		unpack(src, dst);
-        } else {
-	        InputStream in = new FileInputStream(src);
-        	OutputStream out = new FileOutputStream(dst);
+    private void copyFile( File src, File dst )
+        throws IOException
+    {
+        if ( unpack )
+        {
+            unpack( src, dst );
+        }
+        else
+        {
+            InputStream in = new FileInputStream( src );
+            OutputStream out = new FileOutputStream( dst );
 
-        	streamcopy(in, out);
+            streamcopy( in, out );
 
-		in.close();
-		out.close();
-	}
+            in.close();
+            out.close();
+        }
     }
 
     private void streamcopy(InputStream in, OutputStream out) throws IOException {
@@ -120,25 +125,29 @@ public class HardDeployMojo extends AbstractJBossMojo {
         }
     }
 
-    void unpack(File zipFile, File targetDir) throws IOException {
-	FileInputStream in = new FileInputStream(zipFile);
-	ZipInputStream zipIn = new ZipInputStream(in);
-	
-	File dir = targetDir.getCanonicalFile();
-	dir.mkdirs();
-	ZipEntry entry;
-	for (; (entry = zipIn.getNextEntry()) != null;) {
-		if (entry.isDirectory()) {
-			continue;
-		}
-		String file = targetDir + "/" + entry.getName();
+    public void unpack( File zipFile, File targetDir )
+        throws IOException
+    {
+        FileInputStream in = new FileInputStream( zipFile );
+        ZipInputStream zipIn = new ZipInputStream( in );
 
-		new File(file).getParentFile().getCanonicalFile().mkdirs();
+        File dir = targetDir.getCanonicalFile();
+        dir.mkdirs();
+        ZipEntry entry;
+        while ( ( entry = zipIn.getNextEntry() ) != null )
+        {
+            if ( entry.isDirectory() )
+            {
+                continue;
+            }
+            String file = targetDir + "/" + entry.getName();
 
-		FileOutputStream out = new FileOutputStream(file);
-		streamcopy(zipIn, out);
-		out.close();
-	}
-	zipIn.close();
+            new File( file ).getParentFile().getCanonicalFile().mkdirs();
+
+            FileOutputStream out = new FileOutputStream( file );
+            streamcopy( zipIn, out );
+            out.close();
+        }
+        zipIn.close();
     }
 }
