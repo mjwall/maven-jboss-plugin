@@ -20,16 +20,19 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Stops JBoss.
- *
+ * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal stop
  * @requiresProject false
- * 
  */
-public class StopMojo extends AbstractJBossMojo {
+public class StopMojo
+    extends AbstractJBossMojo
+{
 
-    public void execute() throws MojoExecutionException {
-        launch("shutdown", "-S");
+    public void execute()
+        throws MojoExecutionException
+    {
+        launch( "shutdown", "-S" );
     }
 
 }

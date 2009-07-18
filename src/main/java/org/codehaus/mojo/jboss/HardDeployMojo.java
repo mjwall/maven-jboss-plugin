@@ -29,17 +29,18 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 /**
- * Hard deploys the file by copying it to the
- * <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
- *
+ * Hard deploys the file by copying it to the <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
+ * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal harddeploy
  */
-public class HardDeployMojo extends AbstractJBossMojo {
+public class HardDeployMojo
+    extends AbstractJBossMojo
+{
 
     /**
      * The name of the file or directory to deploy or undeploy.
-     *
+     * 
      * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      * @required
      */
@@ -47,53 +48,72 @@ public class HardDeployMojo extends AbstractJBossMojo {
 
     /**
      * An optional name of a subdirectory on the deploy directory to be used
+     * 
      * @parameter
      */
     protected String deploySubDir;
 
     /**
      * A boolean indicating if the artifact should be unpacked when deployed
+     * 
      * @parameter
      */
     protected boolean unpack;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
 
         checkConfig();
-        try{
+        try
+        {
 
-            //Fix the ejb packaging to a jar
+            // Fix the ejb packaging to a jar
             String fixedFile = null;
-            if (fileName.toLowerCase().endsWith("ejb")){
-                fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
-            } else {
+            if ( fileName.toLowerCase().endsWith( "ejb" ) )
+            {
+                fixedFile = fileName.substring( 0, fileName.length() - 3 ) + "jar";
+            }
+            else
+            {
                 fixedFile = fileName;
             }
 
-            String deployDir = deploySubDir == null ? "/deploy/" : ("/deploy/" + deploySubDir + "/");
-            File src = new File(fixedFile);
-            File dst = new File(jbossHome + "/server/" + serverName + deployDir + src.getName());
+            String deployDir = deploySubDir == null ? "/deploy/" : ( "/deploy/" + deploySubDir + "/" );
+            File src = new File( fixedFile );
+            File dst = new File( jbossHome + "/server/" + serverName + deployDir + src.getName() );
 
-            getLog().info((unpack ? "Unpacking " : "Copying ") + src.getAbsolutePath() + " to " + dst.getAbsolutePath());
-            copy(src, dst);
-        } catch (Exception e){
+            getLog().info(
+                           ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to " +
+                               dst.getAbsolutePath() );
+            copy( src, dst );
+        }
+        catch ( Exception e )
+        {
             throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
         }
 
     }
 
-    private void copy(File srcDir, File dstDir) throws IOException {
-        if (srcDir.isDirectory()) {
-            if (!dstDir.exists()) {
+    private void copy( File srcDir, File dstDir )
+        throws IOException
+    {
+        if ( srcDir.isDirectory() )
+        {
+            if ( !dstDir.exists() )
+            {
                 dstDir.mkdir();
             }
 
             String[] children = srcDir.list();
-            for (int i = 0; i < children.length; i++) {
-                copy(new File(srcDir, children[i]), new File(dstDir, children[i]));
+            for ( int i = 0; i < children.length; i++ )
+            {
+                copy( new File( srcDir, children[i] ), new File( dstDir, children[i] ) );
             }
-        } else {
-            copyFile(srcDir, dstDir);
+        }
+        else
+        {
+            copyFile( srcDir, dstDir );
         }
     }
 
@@ -116,12 +136,15 @@ public class HardDeployMojo extends AbstractJBossMojo {
         }
     }
 
-    private void streamcopy(InputStream in, OutputStream out) throws IOException {
+    private void streamcopy( InputStream in, OutputStream out )
+        throws IOException
+    {
         // Transfer bytes from in to out
         byte[] buf = new byte[1024];
         int len;
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf, 0, len);
+        while ( ( len = in.read( buf ) ) > 0 )
+        {
+            out.write( buf, 0, len );
         }
     }
 

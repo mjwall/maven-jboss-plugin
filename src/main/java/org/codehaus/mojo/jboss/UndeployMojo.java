@@ -21,36 +21,44 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Undeploys a directory or file from JBoss via JMX.
- *
+ * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal undeploy
  */
-public class UndeployMojo extends AbstractDeployerMojo {
+public class UndeployMojo
+    extends AbstractDeployerMojo
+{
 
     /**
      * The undeployment URL.
-     *
+     * 
      * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0="
      * @required
      */
     protected String undeployUrlPath;
 
-    public void execute() throws MojoExecutionException {
+    public void execute()
+        throws MojoExecutionException
+    {
 
-        //Fix the ejb packaging to a jar
+        // Fix the ejb packaging to a jar
         Iterator iter = fileNames.iterator();
-        while (iter.hasNext()) {
-            String fileName = (String)iter.next();
+        while ( iter.hasNext() )
+        {
+            String fileName = (String) iter.next();
             String fixedFile = null;
-            if (fileName.toLowerCase().endsWith("ejb")){
-                fixedFile = fileName.substring(0, fileName.length() - 3) + "jar";
-            } else {
+            if ( fileName.toLowerCase().endsWith( "ejb" ) )
+            {
+                fixedFile = fileName.substring( 0, fileName.length() - 3 ) + "jar";
+            }
+            else
+            {
                 fixedFile = fileName;
             }
 
-            getLog().info("Undeploying " + fixedFile + " from JBoss.");
+            getLog().info( "Undeploying " + fixedFile + " from JBoss." );
             String url = "http://" + hostName + ":" + port + undeployUrlPath + fixedFile;
-            doURL(url);
+            doURL( url );
         }
     }
 }

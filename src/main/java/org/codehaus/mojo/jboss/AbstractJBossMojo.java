@@ -19,25 +19,21 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import org.apache.commons.lang.SystemUtils;
-
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56
- * PM To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56 PM To change this template use File |
+ * Settings | File Templates.
  */
-public abstract class AbstractJBossMojo extends AbstractMojo {
+public abstract class AbstractJBossMojo
+    extends AbstractMojo
+{
 
     /**
-     * The location of JBoss Home. This is a required configuration parameter
-     * (unless JBOSS_HOME is set).
+     * The location of JBoss Home. This is a required configuration parameter (unless JBOSS_HOME is set).
      * 
-     * @parameter expression="ENV"
+     * @parameter expression="${env.JBOSS_HOME}"
      * @required
      */
     protected String jbossHome;
@@ -50,67 +46,67 @@ public abstract class AbstractJBossMojo extends AbstractMojo {
      */
     protected String serverName;
 
-    protected void checkConfig() throws MojoExecutionException {
-        if (jbossHome == null || jbossHome.equals("ENV")) {
-            if (SystemUtils.getJavaVersion() < 1.5)
-            {
-                throw new MojoExecutionException(
-                        "Neither JBOSS_HOME nor the jbossHome configuration parameter is set! Also, to save you the trouble, JBOSS_HOME cannot be read running a VM < 1.5, so set the jbossHome configuration parameter or use -D.");
-            }
-            jbossHome = System.getenv("JBOSS_HOME");
+    protected void checkConfig()
+        throws MojoExecutionException
+    {
+        getLog().debug( "Using JBOSS_HOME: " + jbossHome );
+        if ( jbossHome == null || jbossHome.equals( "" ) )
+        {
+            throw new MojoExecutionException( "Neither JBOSS_HOME nor the jbossHome configuration parameter is set!" );
         }
 
-        if (jbossHome == null) {
-            throw new MojoExecutionException(
-                    "Neither JBOSS_HOME nor the jbossHome configuration parameter is set!");
-        }
     }
 
-    protected void launch(String fName, String params)
-        throws MojoExecutionException {
+    protected void launch( String fName, String params )
+        throws MojoExecutionException
+    {
 
-        try {
+        try
+        {
             checkConfig();
-            String osName = System.getProperty("os.name");
+            String osName = System.getProperty( "os.name" );
             Runtime runtime = Runtime.getRuntime();
 
             Process p = null;
-            if (osName.startsWith("Windows")) {
-                String command[] = {
-                    "cmd.exe",
-                    "/C",
-                    "cd " + jbossHome + "\\bin & "
-                        + fName + ".bat " + " " + params };
-                    p = runtime.exec(command);
-                    dump(p.getInputStream());
-                    dump(p.getErrorStream());
-            } else {
-                String command[] = {
-                    "sh",
-                    "-c",
-                    "cd " + jbossHome + "/bin; ./"
-                        + fName + ".sh " + " " + params };
-                    p = runtime.exec(command);
+            if ( osName.startsWith( "Windows" ) )
+            {
+                String command[] = { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & " + fName + ".bat " + " " + params };
+                p = runtime.exec( command );
+                dump( p.getInputStream() );
+                dump( p.getErrorStream() );
+            }
+            else
+            {
+                String command[] = { "sh", "-c", "cd " + jbossHome + "/bin; ./" + fName + ".sh " + " " + params };
+                p = runtime.exec( command );
             }
 
-        } catch (Exception e) {
-            throw new MojoExecutionException("Mojo error occurred: "
-                    + e.getMessage(), e);
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
         }
     }
 
-    protected void dump(final InputStream a_input) {
-        new Thread(new Runnable() {
-            public void run() {
-                try {
+    protected void dump( final InputStream a_input )
+    {
+        new Thread( new Runnable()
+        {
+            public void run()
+            {
+                try
+                {
                     byte[] b = new byte[1000];
-                    while ((a_input.read(b)) != -1) {
+                    while ( ( a_input.read( b ) ) != -1 )
+                    {
                     }
-                } catch (IOException e) {
+                }
+                catch ( IOException e )
+                {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        } ).start();
     }
 
 }

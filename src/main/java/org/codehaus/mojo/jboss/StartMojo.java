@@ -20,17 +20,20 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Starts JBoss.
- *
+ * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal start
  * @requiresProject false
- * 
  */
-public class StartMojo extends AbstractJBossMojo {
+public class StartMojo
+    extends AbstractJBossMojo
+{
 
-    public void execute() throws MojoExecutionException {
-        getLog().info("Starting JBoss...");
-        launch("run", "-c " + serverName);
+    public void execute()
+        throws MojoExecutionException
+    {
+        getLog().info( "Starting JBoss..." );
+        launch( "run", "-c " + serverName );
     }
 
 }
