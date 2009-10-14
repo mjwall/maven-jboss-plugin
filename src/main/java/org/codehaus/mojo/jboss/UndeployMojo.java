@@ -40,8 +40,12 @@ public class UndeployMojo
     public void execute()
         throws MojoExecutionException
     {
+        if ( fileNames == null )
+        {
+            getLog().info( "No files configured to undeploy." );
+            return;
+        }
 
-        // Fix the ejb packaging to a jar
         Iterator iter = fileNames.iterator();
         while ( iter.hasNext() )
         {
@@ -49,6 +53,7 @@ public class UndeployMojo
             String fixedFile = null;
             if ( fileName.toLowerCase().endsWith( "ejb" ) )
             {
+                // Fix the ejb packaging to a jar
                 fixedFile = fileName.substring( 0, fileName.length() - 3 ) + "jar";
             }
             else

@@ -49,12 +49,12 @@ public class DeployMojo
         throws MojoExecutionException
     {
 
-        // Fix the ejb packaging to a jar
-
         if ( fileNames == null )
         {
+            getLog().info( "No files configured to deploy." );
             return;
         }
+
         Iterator iter = fileNames.iterator();
         while ( iter.hasNext() )
         {
@@ -63,6 +63,7 @@ public class DeployMojo
             String fixedFile = null;
             if ( fileName.toLowerCase().endsWith( "ejb" ) )
             {
+                // Fix the ejb packaging to a jar
                 fixedFile = fileName.substring( 0, fileName.length() - 3 ) + "jar";
             }
             else
