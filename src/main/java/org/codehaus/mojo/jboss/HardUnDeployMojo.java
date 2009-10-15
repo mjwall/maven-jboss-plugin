@@ -17,8 +17,7 @@ public class HardUnDeployMojo
     /**
      * The name of the file or directory to undeploy.
      * 
-     * @parameter expression= "${project.build.directory}/${project.build.finalName}.${project.packaging}"
-     * @required
+     * @parameter default-value="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
     protected String fileName;
 

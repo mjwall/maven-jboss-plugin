@@ -49,16 +49,14 @@ public abstract class AbstractDeployerMojo
     /**
      * The port JBoss is running on.
      * 
-     * @parameter expression="8080"
-     * @required
+     * @parameter default-value="8080" expression="${jboss.port}"
      */
     protected int port;
 
     /**
      * The host JBoss is running on.
      * 
-     * @parameter expression="localhost"
-     * @required
+     * @parameter default-value="localhost" expression="${jboss.hostName}"
      */
     protected String hostName;
 

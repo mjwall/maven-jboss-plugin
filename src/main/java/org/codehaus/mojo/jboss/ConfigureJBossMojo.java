@@ -41,26 +41,26 @@ public class ConfigureJBossMojo
     /**
      * The directory for overrides to the conf directory.
      * 
-     * @parameter expression="${basedir}/jboss/conf"
+     * @parameter default-value="${basedir}/jboss/conf"
      */
     private File confDir;
 
     /**
      * The directory for overrides to the lib directory.
      * 
-     * @parameter expression="${basedir}/jboss/lib"
+     * @parameter default-value="${basedir}/jboss/lib"
      */
     private File libDir;
 
     /**
      * The directory for overrides to the deploy directory.
      * 
-     * @parameter expression="${basedir}/jboss/conf"
+     * @parameter default-value="${basedir}/jboss/conf"
      */
     private File deployDir;
 
     /**
-     * @parameter expression="${project.build.directory}/jboss
+     * @parameter default-value="${project.build.directory}/jboss
      */
     protected File outputDirectory;
 

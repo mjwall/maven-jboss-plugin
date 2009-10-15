@@ -17,8 +17,7 @@ public class ReDeployMojo
     /**
      * The redeployment URL.
      * 
-     * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0="
-     * @required
+     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0="
      */
     protected String redeployUrlPath;
 

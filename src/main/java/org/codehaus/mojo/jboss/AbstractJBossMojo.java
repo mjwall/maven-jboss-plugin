@@ -41,8 +41,7 @@ public abstract class AbstractJBossMojo
     /**
      * The server name.
      * 
-     * @parameter expression="default"
-     * @required
+     * @parameter default-value="default"
      */
     protected String serverName;
 

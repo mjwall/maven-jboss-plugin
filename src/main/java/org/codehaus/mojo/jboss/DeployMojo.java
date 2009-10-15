@@ -33,15 +33,14 @@ public class DeployMojo
     /**
      * The deployment URL.
      * 
-     * @parameter expression="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0="
-     * @required
+     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0="
      */
     protected String deployUrlPath;
 
     /**
      * The character encoding for the fileName.
      * 
-     * @parameter expression="UTF-8"
+     * @parameter default-value="UTF-8" expression="${jboss.fileNameEncoding}"
      */
     protected String fileNameEncoding;
 
@@ -85,7 +84,7 @@ public class DeployMojo
                 throw new MojoExecutionException( ex.getMessage() );
             }
 
-            getLog().info( "Deploying " + fixedFile + " to JBoss." );
+            getLog().info( "Deploying " + fileName + " to JBoss." );
             String url = "http://" + hostName + ":" + port + deployUrlPath + fixedFile;
             doURL( url );
         }

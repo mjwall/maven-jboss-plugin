@@ -41,8 +41,7 @@ public class HardDeployMojo
     /**
      * The name of the file or directory to deploy or undeploy.
      * 
-     * @parameter expression="${project.build.directory}/${project.build.finalName}.${project.packaging}"
-     * @required
+     * @parameter default-value="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
     protected String fileName;
 
@@ -56,7 +55,7 @@ public class HardDeployMojo
     /**
      * A boolean indicating if the artifact should be unpacked when deployed
      * 
-     * @parameter
+     * @parameter default-value="false"
      */
     protected boolean unpack;
 
