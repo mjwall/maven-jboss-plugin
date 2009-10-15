@@ -72,9 +72,7 @@ public abstract class AbstractDeployerMojo
     /**
      * The Maven Wagon manager to use when obtaining server authentication details.
      * 
-     * @parameter expression = "${component.org.apache.maven.artifact.manager.WagonManager}"
-     * @required
-     * @readonly
+     * @component role="org.apache.maven.artifact.manager.WagonManager"
      */
     private WagonManager wagonManager;
 
