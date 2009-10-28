@@ -68,7 +68,6 @@ public class StartAndWaitMojo
         // Start JBoss
         super.execute();
 
-        
         InitialContext ctx = getInitialContext();
         
         // Try to get JBoss jmx MBean connection
@@ -101,21 +100,21 @@ public class StartAndWaitMojo
         getLog().info( "JBoss JMX MBean connection successful!" );
         
         // Wait until server startup is complete
-        boolean isStarted = false;
+        boolean started = false;
         long startTime = System.currentTimeMillis();
-        while ( !isStarted && System.currentTimeMillis() - startTime < timeout )
+        while ( !started && System.currentTimeMillis() - startTime < timeout )
         {
             try
             {
                 Thread.sleep( ONE_SECOND );
-                isStarted = isStarted( server );
+                started = isStarted( server );
             }
             catch ( Exception e )
             {
                 throw new MojoExecutionException( "Unable to wait: " + e.getMessage(), e );
             }
         }
-        if ( !isStarted )
+        if ( !started )
         {
             throw new MojoExecutionException( "JBoss AS is not stared before timeout has expired! " );
         }
