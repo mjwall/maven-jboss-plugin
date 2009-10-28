@@ -1,5 +1,9 @@
 package org.codehaus.mojo.jboss;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.rmi.RMISecurityManager;
 import java.util.Properties;
 
@@ -68,6 +72,23 @@ public class StartAndWaitMojo
         // Start JBoss
         super.execute();
 
+        // Set up the security manager to allow remote code to execute.
+        try 
+        {
+            File policyFile = File.createTempFile( "jboss-client", ".policy" );
+            policyFile.deleteOnExit();
+            this.writeSecurityPolicy( policyFile );
+            System.setProperty( "java.security.policy", policyFile.getAbsolutePath() );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to create security policy file: " + e.getMessage(), e );
+        }
+        if ( System.getSecurityManager() == null )
+        {
+            System.setSecurityManager( new RMISecurityManager() );
+        }
+        
         InitialContext ctx = getInitialContext();
         
         // Try to get JBoss jmx MBean connection
@@ -156,5 +177,19 @@ public class StartAndWaitMojo
         {
             throw new MojoExecutionException( "Unable to instantiate naming context: " + e.getMessage(), e );
         }
+    }
+    
+    /**
+     * Create a policyFile that will allow the plugin to execute remote RMI code.
+     * @param policyFile
+     * @throws IOException
+     */
+    public void writeSecurityPolicy( File policyFile ) throws IOException
+    {
+        PrintWriter writer = new PrintWriter( new FileWriter( policyFile ) );
+        writer.println( "grant {");
+        writer.println( "    permission java.security.AllPermission;");
+        writer.println( "};");
+        writer.close();
     }
 }
