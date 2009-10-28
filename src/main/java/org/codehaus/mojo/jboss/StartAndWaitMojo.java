@@ -1,5 +1,8 @@
 package org.codehaus.mojo.jboss;
 
+import java.rmi.RMISecurityManager;
+import java.util.Properties;
+
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.naming.InitialContext;
@@ -11,25 +14,37 @@ import org.apache.maven.plugin.MojoExecutionException;
  * Starts JBoss and waits until the server is started.
  * 
  * @author <a href="mailto:jc7442@yahoo.fr">J-C</a>
+ * @author <a href="mailto:fuzail@fingerprintsoft.org">Fuzail Sarang</a>
  * @goal startAndWait
  * @requiresProject false
  */
 public class StartAndWaitMojo
     extends StartMojo
 {
+    
+    /**
+     * One second in millis.
+     */
+    public final static long ONE_SECOND = 1000;
+    
     /**
      * Maximum number of retries to JBoss JMX MBean connection.
      * 
-     * @parameter default-value="3" expression="${jboss.retries}"
-     * @required
+     * @parameter default-value="3" expression="${jboss.retry}"
      */
     protected int retry;
 
     /**
+     * Wait in ms before retrying JBoss JMX MBean connection.
+     * 
+     * @parameter default-value="5000" expression="${jboss.retryWait}"
+     */
+    protected int retryWait;
+        
+    /**
      * Timeout in ms to start the application server (once JMX MBean connection has been reached).
      * 
      * @parameter default-value="20000" expression="${jboss.timeout}"
-     * @required
      */
     protected int timeout;
 
@@ -37,7 +52,6 @@ public class StartAndWaitMojo
      * The port for the naming service.
      * 
      * @parameter default-value="1099" expression="${jboss.namingPort}"
-     * @required
      */
     protected String namingPort;
 
@@ -45,7 +59,6 @@ public class StartAndWaitMojo
      * The host JBoss is running on.
      * 
      * @parameter default-value="localhost" expression="${jboss.hostname}"
-     * @required
      */
     protected String hostName;
 
@@ -54,8 +67,9 @@ public class StartAndWaitMojo
     {
         // Start JBoss
         super.execute();
-        // Initialize the initial context
+
         InitialContext ctx = getInitialContext();
+        
         // Try to get JBoss jmx MBean connection
         MBeanServerConnection s = null;
         int i = 0;
@@ -63,6 +77,7 @@ public class StartAndWaitMojo
         {
             try
             {
+                Thread.sleep( retryWait );
                 s = (MBeanServerConnection) ctx.lookup( "jmx/invoker/RMIAdaptor" );
                 break;
             }
@@ -73,14 +88,14 @@ public class StartAndWaitMojo
                 {
                     throw new MojoExecutionException( "Unable to get JBoss jmx MBean connection: " + e.getMessage(), e );
                 }
-                getLog().info( "Retry to retrieve JBoss jmx MBean connection !" );
+                getLog().info( "Retry to retrieve JBoss jmx MBean connection..." );
             }
             catch ( Exception e )
             {
                 e.printStackTrace();
             }
         }
-        getLog().info( "JBoss jmx MBean connection successful!" );
+        getLog().info( "JBoss JMX MBean connection successful!" );
         // Wait server is started
         boolean isStarted = false;
         long startTime = System.currentTimeMillis();
@@ -88,6 +103,7 @@ public class StartAndWaitMojo
         {
             try
             {
+                Thread.sleep( ONE_SECOND );
                 isStarted = isStarted( s );
             }
             catch ( Exception e )
@@ -102,6 +118,13 @@ public class StartAndWaitMojo
         getLog().info( "JBoss server started!" );
     }
 
+    /**
+     * Check if the server has finished startup. 
+     * 
+     * @param s
+     * @return
+     * @throws Exception
+     */
     protected boolean isStarted( MBeanServerConnection s )
         throws Exception
     {
@@ -109,15 +132,21 @@ public class StartAndWaitMojo
         return ( (Boolean) s.getAttribute( serverMBeanName, "Started" ) ).booleanValue();
     }
 
+    /**
+     * Set up the context information for connecting the the jboss server.
+     * @return
+     * @throws MojoExecutionException
+     */
     protected InitialContext getInitialContext()
         throws MojoExecutionException
     {
+        Properties env = new Properties();
         try
         {
-            System.getProperties().put( "java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory" );
-            System.getProperties().put( "java.naming.factory.url.pkgs", "org.jboss.naming:org.jnp.interfaces" );
-            System.getProperties().put( "java.naming.provider.url", hostName + ":" + namingPort );
-            return new InitialContext();
+            env.put( "java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory" );
+            env.put( "java.naming.factory.url.pkgs", "org.jboss.naming:org.jnp.interfaces" );
+            env.put( "java.naming.provider.url", hostName + ":" + namingPort );
+            return new InitialContext( env );
         }
         catch ( NamingException e )
         {
