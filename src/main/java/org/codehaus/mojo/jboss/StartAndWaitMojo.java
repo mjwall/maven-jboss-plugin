@@ -28,21 +28,21 @@ public class StartAndWaitMojo
     public final static long ONE_SECOND = 1000;
     
     /**
-     * Maximum number of retries to JBoss JMX MBean connection.
+     * Maximum number of retries to get JBoss JMX MBean connection.
      * 
      * @parameter default-value="3" expression="${jboss.retry}"
      */
     protected int retry;
 
     /**
-     * Wait in ms before retrying JBoss JMX MBean connection.
+     * Wait in ms before each retry of the JBoss JMX MBean connection.
      * 
      * @parameter default-value="5000" expression="${jboss.retryWait}"
      */
     protected int retryWait;
         
     /**
-     * Timeout in ms to start the application server (once JMX MBean connection has been reached).
+     * Time in ms to start the application server (once JMX MBean connection has been reached).
      * 
      * @parameter default-value="20000" expression="${jboss.timeout}"
      */
@@ -68,35 +68,39 @@ public class StartAndWaitMojo
         // Start JBoss
         super.execute();
 
+        
         InitialContext ctx = getInitialContext();
         
         // Try to get JBoss jmx MBean connection
-        MBeanServerConnection s = null;
-        int i = 0;
-        while ( true )
+        MBeanServerConnection server = null;
+        NamingException ne = null;
+        for ( int i = 0; i < retry; ++i )
         {
             try
             {
                 Thread.sleep( retryWait );
-                s = (MBeanServerConnection) ctx.lookup( "jmx/invoker/RMIAdaptor" );
+                server = (MBeanServerConnection) ctx.lookup( "jmx/invoker/RMIAdaptor" );
                 break;
             }
             catch ( NamingException e )
             {
-                i++;
-                if ( i > retry )
-                {
-                    throw new MojoExecutionException( "Unable to get JBoss jmx MBean connection: " + e.getMessage(), e );
-                }
-                getLog().info( "Retry to retrieve JBoss jmx MBean connection..." );
+                ne = e;
+                getLog().info( "Retry to retrieve JBoss jmx MBean connection... " );
             }
-            catch ( Exception e )
+            catch ( InterruptedException e )
             {
+                getLog().warn( "Thread interrupted while waiting for MBean connection: " +  e.getMessage() );
                 e.printStackTrace();
             }
         }
+        
+        if ( server == null )
+        {
+            throw new MojoExecutionException( "Unable to get JBoss jmx MBean connection: " + ne.getMessage(), ne );
+        }
         getLog().info( "JBoss JMX MBean connection successful!" );
-        // Wait server is started
+        
+        // Wait until server startup is complete
         boolean isStarted = false;
         long startTime = System.currentTimeMillis();
         while ( !isStarted && System.currentTimeMillis() - startTime < timeout )
@@ -104,7 +108,7 @@ public class StartAndWaitMojo
             try
             {
                 Thread.sleep( ONE_SECOND );
-                isStarted = isStarted( s );
+                isStarted = isStarted( server );
             }
             catch ( Exception e )
             {
@@ -119,17 +123,18 @@ public class StartAndWaitMojo
     }
 
     /**
-     * Check if the server has finished startup. 
+     * Check if the server has finished startup.  Will throw one of several
+     * exceptions if the server connection fails.
      * 
      * @param s
      * @return
-     * @throws Exception
+     * @throws Exception 
      */
-    protected boolean isStarted( MBeanServerConnection s )
+    protected boolean isStarted( MBeanServerConnection server )
         throws Exception
     {
         ObjectName serverMBeanName = new ObjectName( "jboss.system:type=Server" );
-        return ( (Boolean) s.getAttribute( serverMBeanName, "Started" ) ).booleanValue();
+        return ( (Boolean) server.getAttribute( serverMBeanName, "Started" ) ).booleanValue();
     }
 
     /**
