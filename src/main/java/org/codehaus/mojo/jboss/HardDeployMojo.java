@@ -32,7 +32,7 @@ import java.util.zip.ZipInputStream;
  * Hard deploys the file by copying it to the <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
  * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
- * @goal harddeploy
+ * @goal hard-deploy
  */
 public class HardDeployMojo
     extends AbstractJBossMojo

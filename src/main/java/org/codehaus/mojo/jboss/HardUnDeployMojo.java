@@ -9,7 +9,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * Delete file form <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
  * 
  * @author <a href="mailto:bjkuczynski@gmial.com">Bartek 'Koziolek' Kuczynski</a>
- * @goal hardundeploy
+ * @goal hard-undeploy
  */
 public class HardUnDeployMojo
     extends AbstractJBossMojo

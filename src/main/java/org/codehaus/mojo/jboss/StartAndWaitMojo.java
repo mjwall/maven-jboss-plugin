@@ -19,7 +19,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * 
  * @author <a href="mailto:jc7442@yahoo.fr">J-C</a>
  * @author <a href="mailto:fuzail@fingerprintsoft.org">Fuzail Sarang</a>
- * @goal startAndWait
+ * @goal start-and-wait
  * @requiresProject false
  */
 public class StartAndWaitMojo
@@ -34,7 +34,7 @@ public class StartAndWaitMojo
     /**
      * Maximum number of retries to get JBoss JMX MBean connection.
      * 
-     * @parameter default-value="3" expression="${jboss.retry}"
+     * @parameter default-value="4" expression="${jboss.retry}"
      */
     protected int retry;
 
@@ -105,7 +105,7 @@ public class StartAndWaitMojo
             catch ( NamingException e )
             {
                 ne = e;
-                getLog().info( "Retry to retrieve JBoss jmx MBean connection... " );
+                getLog().info( "Waiting to retrieve JBoss jmx MBean connection... " );
             }
             catch ( InterruptedException e )
             {
@@ -118,7 +118,8 @@ public class StartAndWaitMojo
         {
             throw new MojoExecutionException( "Unable to get JBoss jmx MBean connection: " + ne.getMessage(), ne );
         }
-        getLog().info( "JBoss JMX MBean connection successful!" );
+
+        getLog().info( "JBoss JMX MBean connection successful!" );            
         
         // Wait until server startup is complete
         boolean started = false;
