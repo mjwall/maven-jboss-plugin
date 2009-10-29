@@ -10,6 +10,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * 
  * @author <a href="mailto:bjkuczynski@gmial.com">Bartek 'Koziolek' Kuczynski</a>
  * @goal hard-undeploy
+ * @since 1.4
  */
 public class HardUnDeployMojo
     extends AbstractJBossMojo

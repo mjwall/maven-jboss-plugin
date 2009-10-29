@@ -33,6 +33,7 @@ import java.util.zip.ZipInputStream;
  * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal hard-deploy
+ * @since 1.4
  */
 public class HardDeployMojo
     extends AbstractJBossMojo

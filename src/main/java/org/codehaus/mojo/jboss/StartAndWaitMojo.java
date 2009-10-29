@@ -21,6 +21,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @author <a href="mailto:fuzail@fingerprintsoft.org">Fuzail Sarang</a>
  * @goal start-and-wait
  * @requiresProject false
+ * @since 1.4
  */
 public class StartAndWaitMojo
     extends StartMojo
