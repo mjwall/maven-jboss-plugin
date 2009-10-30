@@ -80,16 +80,18 @@ public class StartAndWaitMojo
             policyFile.deleteOnExit();
             this.writeSecurityPolicy( policyFile );
             System.setProperty( "java.security.policy", policyFile.getAbsolutePath() );
+            System.setSecurityManager( new RMISecurityManager() );
         }
         catch ( IOException e )
         {
-            throw new MojoExecutionException( "Unable to create security policy file: " + e.getMessage(), e );
+            getLog().info( "Unable to create security policy file for loading remote classes: " + e.getMessage(), e );
+            getLog().info( "Will try to load required classes from local classpath." );
         }
-        if ( System.getSecurityManager() == null )
+        catch ( SecurityException e )
         {
-            System.setSecurityManager( new RMISecurityManager() );
+            getLog().info( "Unable to set security manager for loading remote classes: " + e.getMessage(), e );
+            getLog().info( "Will try to load required classes from local classpath." );
         }
-        
         InitialContext ctx = getInitialContext();
         
         // Try to get JBoss jmx MBean connection
