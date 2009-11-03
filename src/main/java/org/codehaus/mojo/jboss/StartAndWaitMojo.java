@@ -79,7 +79,9 @@ public class StartAndWaitMojo
             File policyFile = File.createTempFile( "jboss-client", ".policy" );
             policyFile.deleteOnExit();
             this.writeSecurityPolicy( policyFile );
-            System.setProperty( "java.security.policy", policyFile.getAbsolutePath() );
+            // Get the canonical file which expands the shortened directory names in Windows
+            policyFile = policyFile.getCanonicalFile();
+            System.setProperty( "java.security.policy", policyFile.toURI().toString() );
             System.setSecurityManager( new RMISecurityManager() );
         }
         catch ( IOException e )
@@ -108,7 +110,7 @@ public class StartAndWaitMojo
             catch ( NamingException e )
             {
                 ne = e;
-                getLog().info( "Waiting to retrieve JBoss jmx MBean connection... " );
+                getLog().info( "Waiting to retrieve JBoss JMX MBean connection... " );
             }
             catch ( InterruptedException e )
             {
@@ -119,7 +121,7 @@ public class StartAndWaitMojo
         
         if ( server == null )
         {
-            throw new MojoExecutionException( "Unable to get JBoss jmx MBean connection: " + ne.getMessage(), ne );
+            throw new MojoExecutionException( "Unable to get JBoss JMX MBean connection: " + ne.getMessage(), ne );
         }
 
         getLog().info( "JBoss JMX MBean connection successful!" );            
@@ -143,7 +145,7 @@ public class StartAndWaitMojo
         {
             throw new MojoExecutionException( "JBoss AS is not stared before timeout has expired! " );
         }
-        getLog().info( "JBoss server started!" );
+        getLog().info( "JBoss AS started!" );
     }
 
     /**
