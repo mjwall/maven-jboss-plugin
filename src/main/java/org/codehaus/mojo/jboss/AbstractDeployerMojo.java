@@ -29,8 +29,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 /**
- * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 1:36:05 PM To change this template use File |
- * Settings | File Templates.
+ * Provides basic functionality for deploying an application over HTTP.
  */
 public abstract class AbstractDeployerMojo
     extends AbstractMojo

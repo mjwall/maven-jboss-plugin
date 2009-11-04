@@ -23,8 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by IntelliJ IDEA. User: jeffgenender Date: Oct 1, 2005 Time: 12:12:56 PM To change this template use File |
- * Settings | File Templates.
+ * This class provides the general functionality for interacting with a local JBoss server.
  */
 public abstract class AbstractJBossMojo
     extends AbstractMojo
