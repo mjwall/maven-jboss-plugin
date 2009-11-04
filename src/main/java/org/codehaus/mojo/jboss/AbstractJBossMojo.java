@@ -38,7 +38,8 @@ public abstract class AbstractJBossMojo
     protected String jbossHome;
 
     /**
-     * The server name.
+     * The name of the server profile to use when starting the server.  This might be something like
+     * "all", "default", or "minimal".
      * 
      * @parameter default-value="default" expression="${jboss.serverName}"
      */
