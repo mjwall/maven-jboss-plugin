@@ -25,7 +25,8 @@ package org.codehaus.mojo.jboss;
  * @goal startAndWait
  * @deprecated As of version 1.4, use the <code>start-and-wait</code> goal instead.
  */
-public class StartAndWaitMojoDeprecated extends StartAndWaitMojo
+public class StartAndWaitMojoDeprecated
+    extends StartAndWaitMojo
 {
 
 }

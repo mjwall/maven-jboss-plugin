@@ -25,7 +25,8 @@ package org.codehaus.mojo.jboss;
  * @goal hardundeploy
  * @deprecated As of version 1.4, use the <code>hard-undeploy</code> goal instead.
  */
-public class HardUndeployMojoDeprecated extends HardUnDeployMojo
+public class HardUndeployMojoDeprecated
+    extends HardUnDeployMojo
 {
 
 }

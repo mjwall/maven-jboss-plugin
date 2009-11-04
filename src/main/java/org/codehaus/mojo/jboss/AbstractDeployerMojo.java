@@ -74,8 +74,8 @@ public abstract class AbstractDeployerMojo
     private WagonManager wagonManager;
 
     /**
-     * The server id found in Maven settings.xml to use when authenticating with 
-     * the JBoss server, or <code>null</code> to use defaults.
+     * The server id found in Maven settings.xml to use when authenticating with the JBoss server, or <code>null</code>
+     * to use defaults.
      * 
      * @parameter
      */

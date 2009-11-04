@@ -115,16 +115,16 @@ public class ConfigureJBossMojo
 
         if ( !serverParentDir.exists() )
         {
-            throw new MojoFailureException( jbossHomeDir.getAbsolutePath() +
-                " does not appear to be a valid jboss home" );
+            throw new MojoFailureException( jbossHomeDir.getAbsolutePath()
+                + " does not appear to be a valid jboss home" );
         }
 
         File serverDir = new File( serverParentDir.getAbsolutePath() + File.separator + serverName );
 
         if ( !serverDir.exists() )
         {
-            throw new MojoFailureException( serverName + " is not a valid server in " +
-                serverParentDir.getAbsolutePath() );
+            throw new MojoFailureException( serverName + " is not a valid server in "
+                + serverParentDir.getAbsolutePath() );
         }
     }
 
@@ -200,8 +200,8 @@ public class ConfigureJBossMojo
         throws MojoExecutionException
     {
         File baseDir =
-            new File( jbossHome + File.separator + SERVER_DIR_NAME + File.separator + serverName + File.separator +
-                dirName );
+            new File( jbossHome + File.separator + SERVER_DIR_NAME + File.separator + serverName + File.separator
+                + dirName );
         File dir = new File( serverDir.getAbsolutePath() + File.separator + dirName );
         try
         {

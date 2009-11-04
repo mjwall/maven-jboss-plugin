@@ -89,8 +89,8 @@ public class HardDeployMojo
             File dst = new File( jbossHome + "/server/" + serverName + deployDir + src.getName() );
 
             getLog().info(
-                           ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to " +
-                               dst.getAbsolutePath() );
+                           ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to "
+                               + dst.getAbsolutePath() );
             copy( src, dst );
         }
         catch ( Exception e )

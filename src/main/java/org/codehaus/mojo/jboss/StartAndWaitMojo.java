@@ -45,12 +45,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 public class StartAndWaitMojo
     extends StartMojo
 {
-    
+
     /**
      * One second in millis.
      */
     public final static long ONE_SECOND = 1000;
-    
+
     /**
      * Maximum number of retries to get JBoss JMX MBean connection.
      * 
@@ -64,7 +64,7 @@ public class StartAndWaitMojo
      * @parameter default-value="5000" expression="${jboss.retryWait}"
      */
     protected int retryWait;
-        
+
     /**
      * Time in ms to start the application server (once JMX MBean connection has been reached).
      * 
@@ -98,7 +98,7 @@ public class StartAndWaitMojo
         super.execute();
 
         // Set up the security manager to allow remote code to execute.
-        try 
+        try
         {
             File policyFile = File.createTempFile( "jboss-client", ".policy" );
             policyFile.deleteOnExit();
@@ -119,7 +119,7 @@ public class StartAndWaitMojo
             getLog().info( "Will try to load required classes from local classpath." );
         }
         InitialContext ctx = getInitialContext();
-        
+
         // Try to get JBoss jmx MBean connection
         MBeanServerConnection server = null;
         NamingException ne = null;
@@ -138,18 +138,18 @@ public class StartAndWaitMojo
             }
             catch ( InterruptedException e )
             {
-                getLog().warn( "Thread interrupted while waiting for MBean connection: " +  e.getMessage() );
+                getLog().warn( "Thread interrupted while waiting for MBean connection: " + e.getMessage() );
                 e.printStackTrace();
             }
         }
-        
+
         if ( server == null )
         {
             throw new MojoExecutionException( "Unable to get JBoss JMX MBean connection: " + ne.getMessage(), ne );
         }
 
-        getLog().info( "JBoss JMX MBean connection successful!" );            
-        
+        getLog().info( "JBoss JMX MBean connection successful!" );
+
         // Wait until server startup is complete
         boolean started = false;
         long startTime = System.currentTimeMillis();
@@ -173,12 +173,11 @@ public class StartAndWaitMojo
     }
 
     /**
-     * Check if the server has finished startup.  Will throw one of several
-     * exceptions if the server connection fails.
+     * Check if the server has finished startup. Will throw one of several exceptions if the server connection fails.
      * 
      * @param s
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     protected boolean isStarted( MBeanServerConnection server )
         throws Exception
@@ -189,6 +188,7 @@ public class StartAndWaitMojo
 
     /**
      * Set up the context information for connecting the the jboss server.
+     * 
      * @return
      * @throws MojoExecutionException
      */
@@ -208,13 +208,15 @@ public class StartAndWaitMojo
             throw new MojoExecutionException( "Unable to instantiate naming context: " + e.getMessage(), e );
         }
     }
-    
+
     /**
      * Create a policyFile that will allow the plugin to execute remote RMI code.
+     * 
      * @param policyFile
      * @throws IOException
      */
-    public void writeSecurityPolicy( File policyFile ) throws IOException
+    public void writeSecurityPolicy( File policyFile )
+        throws IOException
     {
         PrintWriter writer = new PrintWriter( new FileWriter( policyFile ) );
         writer.println( "grant {" );
