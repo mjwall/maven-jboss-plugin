@@ -60,6 +60,11 @@ public class HardDeployMojo
      */
     protected boolean unpack;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {

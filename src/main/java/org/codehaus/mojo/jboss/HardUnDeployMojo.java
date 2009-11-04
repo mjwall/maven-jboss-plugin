@@ -41,6 +41,11 @@ public class HardUnDeployMojo
      */
     protected String fileName;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {

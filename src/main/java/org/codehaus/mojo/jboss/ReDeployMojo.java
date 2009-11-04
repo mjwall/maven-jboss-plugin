@@ -40,6 +40,11 @@ public class ReDeployMojo
      */
     protected String redeployUrlPath;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {

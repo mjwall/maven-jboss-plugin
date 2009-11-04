@@ -29,6 +29,11 @@ public class StartMojo
     extends AbstractJBossMojo
 {
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {

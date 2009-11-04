@@ -86,6 +86,11 @@ public class StartAndWaitMojo
      */
     protected String hostName;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {

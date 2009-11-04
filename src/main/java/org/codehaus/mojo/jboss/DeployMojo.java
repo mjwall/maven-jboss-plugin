@@ -45,6 +45,11 @@ public class DeployMojo
      */
     protected String fileNameEncoding;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {

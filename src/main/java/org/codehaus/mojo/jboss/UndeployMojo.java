@@ -37,6 +37,11 @@ public class UndeployMojo
      */
     protected String undeployUrlPath;
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     */
     public void execute()
         throws MojoExecutionException
     {
