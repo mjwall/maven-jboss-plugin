@@ -69,11 +69,11 @@ ${project.name}
 
 * Examples
 
-  To provide you with better understanding of some usages of the Plugin Name,
+  To provide you with better understanding of some usages of the ${project.name},
   you can take a look into the following examples:
 
-  * {{{examples/example-one.html}Example Description One}}
+  * {{{examples/start-stop-examples.html}Start/Stop Examples}}
 
-  * {{{examples/example-two.html}Example Description Two}}
+  * {{{examples/deploy-undeploy-examples.html}Deploy/Undeploy Examples}}
  
 
