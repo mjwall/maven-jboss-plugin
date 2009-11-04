@@ -28,6 +28,7 @@
     </menu>
     <menu name="Examples">
       <item name="Start and Stop" href="examples/start-stop-examples.html"/>
+      <item name="Deploy/Undeploy" href="examples/deploy-undeploy-examples.html"/>
     </menu>
   </body>
 </project>

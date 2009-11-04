@@ -8,8 +8,6 @@
 
 Start/Stop Examples
 
-* Starting a JBoss Server
-
   To control starting and stopping an instance of JBossAS, the installation must be 
   available via the local file system.  The location of the server can be configured
   via the JBOSS_HOME environment variable, a command line parameter env.JBOSS_HOME,
@@ -44,8 +42,8 @@ Start/Stop Examples
 +---------
 
   To start the server with a profile other than "default", a profile can be selected 
-  using the command line property <<jboss.serverName>>, or using the plugin parameter
-  <<serverName>>.
+  using the command line property <<<jboss.serverName>>>, or using the plugin parameter
+  <<<serverName>>>.
   
 +---------
   mvn jboss:start -Djboss.serverName=all
@@ -95,6 +93,6 @@ Start/Stop Examples
    mvn jboss:start-and-wait -Dmaven.repo.local=C:\maven-repo
 +---------
   
-  Also note that the <<start-and-wait>> goal will call the JBoss startup script and will usually 
+  Also note that the <<<start-and-wait>>> goal will call the JBoss startup script and will usually 
   successfully launch the server even when it is not able to create a JMX connection.
   

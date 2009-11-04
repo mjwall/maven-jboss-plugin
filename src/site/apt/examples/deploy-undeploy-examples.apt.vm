@@ -41,8 +41,8 @@ Deploy/Undeploy Examples
 </project>
 ----------
 
-  The files listed under the <<fileNames>> parameter can be deployed to the 
-  server using the {{{../deploy-mojo.html}deploy}} goal.
+  The files listed under the <<<fileNames>>> parameter can be deployed to the 
+  server using the <<<{{{../deploy-mojo.html}deploy}}>>> goal.
   
 +---------
   mvn jboss:deploy

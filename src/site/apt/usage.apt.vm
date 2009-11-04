@@ -20,11 +20,13 @@ Usage
   <<jbossHome>>.
   
 **  Starting the server
+
 +---------
   mvn jboss:start
 +---------
 
-** Stopping the server  
+** Stopping the server 
+ 
 +---------
   mvn jboss:stop
 +---------
