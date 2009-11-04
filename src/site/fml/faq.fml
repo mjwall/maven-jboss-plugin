@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!--
   Licensed to the Apache Software Foundation (ASF) under one
@@ -19,15 +19,17 @@
   under the License.
 -->
 
-<project xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
-  <body>
-    <menu name="Overview">
-      <item name="Introduction" href="index.html"/>
-      <item name="Goals" href="plugin-info.html"/>
-      <item name="Usage" href="usage.html"/>
-    </menu>
-    <menu name="Examples">
-      <item name="Start and Stop" href="examples/start-stop-examples.html"/>
-    </menu>
-  </body>
-</project>
+<faqs id="FAQ" title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="no-protocol">
+      <question>Why does the start-and-wait mojo fail with the message "no protocol: and"</question>
+      <answer>
+        <p>
+          This is due to an issue in the way Maven builds it's plugin classpaths, and normally happens when using 
+          a local Maven repository path containing a space.  The known workarounds for this are to
+          change the local maven repository path (-Dmaven.repo.local),  or use Maven 3.0 or later.
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>

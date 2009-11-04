@@ -1,0 +1,56 @@
+ ------
+ Usage
+ ------
+ Jeff Genender
+ <jgenender@apache.org>
+ ------
+ October 3, 2005
+ ------
+
+Usage
+
+  This page describes some of the common use cases of the JBoss Maven Plugin.
+
+* Starting and Stopping The Server
+  
+  The JBoss Maven Plugin can be used to start and stop an instance of the JBoss
+  Application Server.  To get started, you must first configure the location
+  of the JBoss installation using either the <<JBOSS_HOME>> environment variable, 
+  the command line parameter <<env.JBOSS_HOME>>, or via the plugin parameter 
+  <<jbossHome>>.
+  
+**  Starting the server
++---------
+  mvn jboss:start
++---------
+
+** Stopping the server  
++---------
+  mvn jboss:stop
++---------
+  
+  More information about starting and stopping the server
+  can be found on the {{{examples/start-stop-examples.html}examples page}}.
+
+
+* Deploying and Undeploying Applications
+
+  Applications can be deployed and undeployed to the server using either JMX or
+  by copying the files directly to the server's deploy directory.  To deploy via
+  JMX over HTTP, you can use the deploy goal.
+  
++---------
+  mvn jboss:deploy
++---------
+  
+  The <<hard-deploy>> goal can be used to copy the file directly to the deploy 
+  directory of a local server.
+  
++---------
+  mvn jboss:hard-deploy
++---------
+  
+  More information the deploy and undeploy goals can be found on the 
+  {{{examples/deploy-undeploy-examples.html}examples page}}.
+  
+  
