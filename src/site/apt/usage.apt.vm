@@ -10,6 +10,35 @@
 Usage
 
   This page describes some of the common use cases of the JBoss Maven Plugin.
+  The plugin can be configured via command line parameters or by adding 
+  information to the POM.  
+  
+----------
+<project>
+  ...
+  <build>
+    ...
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jboss-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <jbossHome>/usr/jboss-4.2.3.GA</jbossHome>
+          <serverName>all</serverName>
+          <fileName>target/my-project.war</fileName>
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  ...
+</project>
+----------
+
+  Detailed information about available configuration parameters for each
+  plugin goal can be found on the {{{./plugin-info.html}plugin info page}}.
 
 * Starting and Stopping The Server
   
@@ -18,20 +47,20 @@ Usage
   of the JBoss installation using either the <<JBOSS_HOME>> environment variable, 
   the command line parameter <<env.JBOSS_HOME>>, or via the plugin parameter 
   <<jbossHome>>.
-  
-**  Starting the server
 
+  The server can be started using the {{{../start-mojo.html}start}} goal.
+  
 +---------
   mvn jboss:start
 +---------
 
-** Stopping the server 
+  And stopped using the {{{../stop-mojo.html}stop}} goal.
  
 +---------
   mvn jboss:stop
 +---------
   
-  More information about starting and stopping the server
+  More information about plugin options and starting and stopping the server
   can be found on the {{{examples/start-stop-examples.html}examples page}}.
 
 
