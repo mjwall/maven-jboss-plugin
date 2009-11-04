@@ -49,7 +49,7 @@ public class StartAndWaitMojo
     /**
      * One second in millis.
      */
-    public final static long ONE_SECOND = 1000;
+    public static final long ONE_SECOND = 1000;
 
     /**
      * Maximum number of retries to get JBoss JMX MBean connection.
