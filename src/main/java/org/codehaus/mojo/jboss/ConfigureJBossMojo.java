@@ -1,3 +1,5 @@
+package org.codehaus.mojo.jboss;
+
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.codehaus.mojo.jboss;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -72,6 +73,12 @@ public class ConfigureJBossMojo
         super();
     }
 
+    /**
+     * Main plugin execution.
+     * 
+     * @throws MojoExecutionException
+     * @throws MojoFailureException
+     */
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
@@ -91,6 +98,11 @@ public class ConfigureJBossMojo
         buildBinDir( serverDir );
     }
 
+    /**
+     * Check that jboss home is configured correctly.
+     * 
+     * @throws MojoFailureException
+     */
     private void checkJBossHome()
         throws MojoFailureException
     {
@@ -116,6 +128,12 @@ public class ConfigureJBossMojo
         }
     }
 
+    /**
+     * Check that the output directory is configured.
+     * 
+     * @param serverDir
+     * @throws MojoFailureException
+     */
     private void checkOutputDirectory( File serverDir )
         throws MojoFailureException
     {
@@ -135,24 +153,49 @@ public class ConfigureJBossMojo
         }
     }
 
+    /**
+     * Copy conf.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void copyBaseConfDir( File serverDir )
         throws MojoExecutionException
     {
         copyBaseDir( serverDir, "conf" );
     }
 
+    /**
+     * Copy lib dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void copyBaseLibDir( File serverDir )
         throws MojoExecutionException
     {
         copyBaseDir( serverDir, "lib" );
     }
 
+    /**
+     * Copy deploy dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void copyBaseDeployDir( File serverDir )
         throws MojoExecutionException
     {
         copyBaseDir( serverDir, "deploy" );
     }
 
+    /**
+     * Copy base dir.
+     * 
+     * @param serverDir
+     * @param dirName
+     * @throws MojoExecutionException
+     */
     private void copyBaseDir( File serverDir, String dirName )
         throws MojoExecutionException
     {
@@ -170,24 +213,50 @@ public class ConfigureJBossMojo
         }
     }
 
+    /**
+     * Overlay conf dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void overlayConfDir( File serverDir )
         throws MojoExecutionException
     {
         overLayDir( serverDir, confDir, "conf" );
     }
 
+    /**
+     * Overlay deploy dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void overlayDeployDir( File serverDir )
         throws MojoExecutionException
     {
         overLayDir( serverDir, deployDir, "deploy" );
     }
 
+    /**
+     * Overlay lib dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void overlayLibDir( File serverDir )
         throws MojoExecutionException
     {
         overLayDir( serverDir, libDir, "lib" );
     }
 
+    /**
+     * Overlay dir.
+     * 
+     * @param serverDir
+     * @param overLayDir
+     * @param dirName
+     * @throws MojoExecutionException
+     */
     private void overLayDir( File serverDir, File overLayDir, String dirName )
         throws MojoExecutionException
     {
@@ -205,6 +274,12 @@ public class ConfigureJBossMojo
         }
     }
 
+    /**
+     * Build the bin dir.
+     * 
+     * @param serverDir
+     * @throws MojoExecutionException
+     */
     private void buildBinDir( File serverDir )
         throws MojoExecutionException
     {

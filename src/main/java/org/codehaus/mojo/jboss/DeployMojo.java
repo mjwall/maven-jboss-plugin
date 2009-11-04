@@ -1,3 +1,5 @@
+package org.codehaus.mojo.jboss;
+
 /*
  * Copyright 2005 Jeff Genender.
  *
@@ -13,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.codehaus.mojo.jboss;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

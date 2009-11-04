@@ -1,3 +1,5 @@
+package org.codehaus.mojo.jboss;
+
 /*
  * Copyright 2005 Jeff Genender.
  *
@@ -13,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.codehaus.mojo.jboss;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -81,6 +81,12 @@ public abstract class AbstractDeployerMojo
      */
     private String server;
 
+    /**
+     * Open a URL.
+     * 
+     * @param url
+     * @throws MojoExecutionException
+     */
     protected void doURL( String url )
         throws MojoExecutionException
     {

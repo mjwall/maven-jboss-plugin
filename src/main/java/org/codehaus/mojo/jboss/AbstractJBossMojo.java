@@ -1,3 +1,5 @@
+package org.codehaus.mojo.jboss;
+
 /*
  * Copyright 2005 Jeff Genender.
  *
@@ -13,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.codehaus.mojo.jboss;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -45,6 +45,11 @@ public abstract class AbstractJBossMojo
      */
     protected String serverName;
 
+    /**
+     * Check that JBOSS_HOME is correctly configured.
+     * 
+     * @throws MojoExecutionException
+     */
     protected void checkConfig()
         throws MojoExecutionException
     {
@@ -56,6 +61,13 @@ public abstract class AbstractJBossMojo
 
     }
 
+    /**
+     * Call the JBoss startup script.
+     * 
+     * @param fName
+     * @param params
+     * @throws MojoExecutionException
+     */
     protected void launch( String fName, String params )
         throws MojoExecutionException
     {
@@ -87,7 +99,7 @@ public abstract class AbstractJBossMojo
         }
     }
 
-    protected void dump( final InputStream a_input )
+    protected void dump( final InputStream input )
     {
         new Thread( new Runnable()
         {
@@ -96,7 +108,7 @@ public abstract class AbstractJBossMojo
                 try
                 {
                     byte[] b = new byte[1000];
-                    while ( ( a_input.read( b ) ) != -1 )
+                    while ( ( input.read( b ) ) != -1 )
                     {
                     }
                 }
