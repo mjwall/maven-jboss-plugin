@@ -15,8 +15,9 @@ package org.codehaus.mojo.jboss;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -40,11 +40,19 @@ public class HardDeployMojo
 {
 
     /**
+     * The names of the files or directories to deploy. If this is set, the fileName parameter will be ignored.
+     * 
+     * @parameter
+     * @since 1.4.1
+     */
+    protected File[] fileNames;
+
+    /**
      * The name of the file or directory to deploy or undeploy.
      * 
      * @parameter default-value="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
-    protected String fileName;
+    protected File fileName;
 
     /**
      * An optional name of a subdirectory on the deploy directory to be used
@@ -70,32 +78,43 @@ public class HardDeployMojo
     {
 
         checkConfig();
-        try
+
+        if ( fileNames == null || fileNames.length == 0 )
         {
-
-            // Fix the ejb packaging to a jar
-            String fixedFile = null;
-            if ( fileName.toLowerCase().endsWith( "ejb" ) )
-            {
-                fixedFile = fileName.substring( 0, fileName.length() - 3 ) + "jar";
-            }
-            else
-            {
-                fixedFile = fileName;
-            }
-
-            String deployDir = deploySubDir == null ? "/deploy/" : ( "/deploy/" + deploySubDir + "/" );
-            File src = new File( fixedFile );
-            File dst = new File( jbossHome + "/server/" + serverName + deployDir + src.getName() );
-
-            getLog().info(
-                           ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to "
-                               + dst.getAbsolutePath() );
-            copy( src, dst );
+            fileNames = new File[1];
+            fileNames[0] = fileName;
         }
-        catch ( Exception e )
+
+        for ( int i = 0; i < fileNames.length; ++i )
         {
-            throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
+            try
+            {
+                String nextFileName = fileNames[i].getAbsolutePath();
+
+                // Fix the ejb packaging to a jar
+                String fixedFile = null;
+                if ( nextFileName.toLowerCase().endsWith( "ejb" ) )
+                {
+                    fixedFile = nextFileName.substring( 0, nextFileName.length() - 3 ) + "jar";
+                }
+                else
+                {
+                    fixedFile = nextFileName;
+                }
+
+                String deployDir = deploySubDir == null ? "/deploy/" : ( "/deploy/" + deploySubDir + "/" );
+                File src = new File( fixedFile );
+                File dst = new File( jbossHome + "/server/" + serverName + deployDir + src.getName() );
+
+                getLog().info(
+                               ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to "
+                                   + dst.getAbsolutePath() );
+                copy( src, dst );
+            }
+            catch ( Exception e )
+            {
+                throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
+            }
         }
 
     }

@@ -35,11 +35,19 @@ public class HardUnDeployMojo
     extends AbstractJBossMojo
 {
     /**
+     * The names of the files or directories to undeploy. If this is set, the fileName parameter will be ignored.
+     * 
+     * @parameter
+     * @since 1.4.1
+     */
+    protected File[] fileNames;
+
+    /**
      * The name of the file or directory to undeploy.
      * 
      * @parameter default-value="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
-    protected String fileName;
+    protected File fileName;
 
     /**
      * Main plugin execution.
@@ -51,18 +59,25 @@ public class HardUnDeployMojo
     {
         checkConfig();
 
-        File tmp = new File( fileName );
-
-        File earFile = new File( jbossHome + "/server/" + serverName + "/deploy/" + tmp.getName() );
-        getLog().info( "Undeploy file: " + earFile.getName() );
-        if ( !earFile.exists() )
+        if ( fileNames == null || fileNames.length == 0 )
         {
-            getLog().info( "File " + earFile.getAbsolutePath() + " doesn't exist!" );
-            return;
+            fileNames = new File[1];
+            fileNames[0] = fileName;
         }
-        if ( earFile.delete() )
+
+        for ( int i = 0; i < fileNames.length; ++i )
         {
-            getLog().info( "File " + earFile.getName() + " undeployed!\nhave a nice day!" );
+            File nextFile = new File( jbossHome + "/server/" + serverName + "/deploy/" + fileNames[i].getName() );
+            getLog().info( "Undeploy file: " + nextFile.getName() );
+            if ( !nextFile.exists() )
+            {
+                getLog().info( "File " + nextFile.getAbsolutePath() + " doesn't exist!" );
+                return;
+            }
+            if ( nextFile.delete() )
+            {
+                getLog().info( "File " + nextFile.getName() + " undeployed!\nhave a nice day!" );
+            }
         }
     }
 }
