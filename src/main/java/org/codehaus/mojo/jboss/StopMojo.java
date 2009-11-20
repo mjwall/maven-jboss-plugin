@@ -19,7 +19,9 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Stops JBoss.
+ * Stops JBoss.  By default the plugin will return immediately after calling "shutdown"
+ * command.  The @see #stopWait parameter can be used to force the plugin to wait 
+ * for a specified time before returning control.
  * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal stop
@@ -30,6 +32,14 @@ public class StopMojo
 {
 
     /**
+     * Wait in ms for server to shutdown before the plugin returns.
+     * 
+     * @since 1.4.1
+     * @parameter expression="${jboss.stopWait}"
+     */
+    protected int stopWait;
+
+    /**
      * Main plugin execution.
      * 
      * @throws MojoExecutionException
@@ -38,6 +48,22 @@ public class StopMojo
         throws MojoExecutionException
     {
         launch( "shutdown", "-S" );
+        
+        if ( stopWait > 0 )
+        {
+            try
+            {
+                Thread.sleep( stopWait );
+            }
+            catch ( InterruptedException e )
+            {
+                getLog().warn( "Thread interrupted while waiting for JBoss to stop: " + e.getMessage() );
+                if ( getLog().isDebugEnabled() )
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }
