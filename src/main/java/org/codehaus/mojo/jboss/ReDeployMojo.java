@@ -33,10 +33,12 @@ public class ReDeployMojo
     extends AbstractDeployerMojo
 {
 
+    public static final String DEFAULT_REDEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0=";
+    
     /**
      * The redeployment URL.
      * 
-     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0="
+     * @parameter
      */
     protected String redeployUrlPath;
 
@@ -53,6 +55,13 @@ public class ReDeployMojo
         {
             getLog().info( "No files configured to deploy." );
             return;
+        }
+
+        // Note: the url path is set here instead of in the parameter default-value because of a parse error
+        // when generating the project site.
+        if (redeployUrlPath == null )
+        {
+            redeployUrlPath = DEFAULT_REDEPLOY_URL;
         }
 
         Iterator iter = fileNames.iterator();

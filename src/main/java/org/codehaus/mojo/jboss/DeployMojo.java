@@ -31,10 +31,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 public class DeployMojo
     extends AbstractDeployerMojo
 {
+    
+    public static final String DEFAULT_DEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0=";
+    
     /**
-     * The deployment URL.
+     * The deployment URL path relative to the base URL path.
      * 
-     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0="
+     * @parameter
      */
     protected String deployUrlPath;
 
@@ -53,11 +56,17 @@ public class DeployMojo
     public void execute()
         throws MojoExecutionException
     {
-
         if ( fileNames == null )
         {
             getLog().info( "No files configured to deploy." );
             return;
+        }
+
+        // Note: the url path is set here instead of in the parameter default-value because of a parse error
+        // when generating the project site.
+        if ( deployUrlPath == null )
+        {
+            deployUrlPath = DEFAULT_DEPLOY_URL;
         }
 
         Iterator iter = fileNames.iterator();

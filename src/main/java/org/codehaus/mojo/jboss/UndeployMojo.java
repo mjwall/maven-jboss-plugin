@@ -29,11 +29,13 @@ import org.apache.maven.plugin.MojoExecutionException;
 public class UndeployMojo
     extends AbstractDeployerMojo
 {
+    
+    public static final String DEFAULT_UNDEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0=";
 
     /**
-     * The undeployment URL.
+     * The undeployment path relative to the base server URL.
      * 
-     * @parameter default-value="/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0="
+     * @parameter
      */
     protected String undeployUrlPath;
 
@@ -49,6 +51,13 @@ public class UndeployMojo
         {
             getLog().info( "No files configured to undeploy." );
             return;
+        }
+        
+        // Note: the url path is set here instead of in the parameter default-value because of a parse error
+        // when generating the project site.
+        if (undeployUrlPath == null )
+        {
+            undeployUrlPath = DEFAULT_UNDEPLOY_URL;
         }
 
         Iterator iter = fileNames.iterator();
