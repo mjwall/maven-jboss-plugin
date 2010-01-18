@@ -30,6 +30,12 @@ public class StartMojo
 {
 
     /**
+     * The set of options to pass to the JBoss "run" command.
+     * @parameter default-value="" expression="${jboss.options}"
+     */
+    protected String options;
+    
+    /**
      * Main plugin execution.
      * 
      * @throws MojoExecutionException
@@ -38,7 +44,13 @@ public class StartMojo
         throws MojoExecutionException
     {
         getLog().info( "Starting JBoss..." );
-        launch( "run", "-c " + serverName );
+        getLog().debug( "new one" );
+        if ( ! serverName.equals( "default" ) )
+        {
+            options = options + " -c " + serverName;
+        }
+        
+        launch( "run", options );
     }
 
 }

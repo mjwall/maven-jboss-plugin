@@ -32,6 +32,12 @@ public class StopMojo
 {
 
     /**
+     * The set of options to pass to the JBoss "shutdown" command.
+     * @parameter default-value="" expression="${jboss.options}"
+     */
+    protected String options;
+    
+    /**
      * Wait in ms for server to shutdown before the plugin returns.
      * 
      * @since 1.4.1
@@ -47,8 +53,8 @@ public class StopMojo
     public void execute()
         throws MojoExecutionException
     {
-        launch( "shutdown", "-S" );
-        
+        launch( "shutdown", options );
+
         if ( stopWait > 0 )
         {
             try
@@ -60,7 +66,7 @@ public class StopMojo
                 getLog().warn( "Thread interrupted while waiting for JBoss to stop: " + e.getMessage() );
                 if ( getLog().isDebugEnabled() )
                 {
-                    e.printStackTrace();
+                    getLog().debug( "Thread interrupted while waiting for JBoss to stop: ", e );
                 }
             }
         }
