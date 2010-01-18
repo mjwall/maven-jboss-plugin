@@ -44,7 +44,6 @@ public class StartMojo
         throws MojoExecutionException
     {
         getLog().info( "Starting JBoss..." );
-        getLog().debug( "new one" );
         if ( ! serverName.equals( "default" ) )
         {
             options = options + " -c " + serverName;

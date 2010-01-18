@@ -17,7 +17,6 @@ package org.codehaus.mojo.jboss;
  */
  
 import org.apache.maven.plugin.MojoExecutionException;
-import org.codehaus.plexus.util.FileUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
