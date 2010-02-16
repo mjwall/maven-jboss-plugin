@@ -19,9 +19,8 @@ package org.codehaus.mojo.jboss;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
- * Stops JBoss.  By default the plugin will return immediately after calling "shutdown"
- * command.  The @see #stopWait parameter can be used to force the plugin to wait 
- * for a specified time before returning control.
+ * Stops JBoss. By default the plugin will return immediately after calling "shutdown" command. The @see #stopWait
+ * parameter can be used to force the plugin to wait for a specified time before returning control.
  * 
  * @author <a href="mailto:jgenender@apache.org">Jeff Genender</a>
  * @goal stop
@@ -32,11 +31,17 @@ public class StopMojo
 {
 
     /**
+     * The command to shutdown JBoss.
+     */
+    public static final String SHUTDOWN_COMMAND = "shutdown";
+
+    /**
      * The set of options to pass to the JBoss "shutdown" command.
+     * 
      * @parameter default-value="" expression="${jboss.options}"
      */
     protected String options;
-    
+
     /**
      * Wait in ms for server to shutdown before the plugin returns.
      * 
@@ -53,7 +58,7 @@ public class StopMojo
     public void execute()
         throws MojoExecutionException
     {
-        launch( "shutdown", options );
+        launch( SHUTDOWN_COMMAND, options );
 
         if ( stopWait > 0 )
         {

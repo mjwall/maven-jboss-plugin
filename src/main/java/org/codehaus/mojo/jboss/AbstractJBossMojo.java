@@ -62,40 +62,41 @@ public abstract class AbstractJBossMojo
     }
 
     /**
-     * Call the JBoss startup script.
+     * Call the JBoss startup or shutdown script.
      * 
-     * @param fName
-     * @param params
+     * @param commandName - The name of the command to run
+     * @param params - The command line parameters
      * @throws MojoExecutionException
      */
-    protected void launch( String fName, String params )
+    protected void launch( String commandName, String params )
         throws MojoExecutionException
     {
 
+        checkConfig();
+        String osName = System.getProperty( "os.name" );
+        Runtime runtime = Runtime.getRuntime();
+        
         try
         {
-            checkConfig();
-            String osName = System.getProperty( "os.name" );
-            Runtime runtime = Runtime.getRuntime();
-
-            Process p = null;
+            Process proc = null;
             if ( osName.startsWith( "Windows" ) )
             {
-                String command[] = { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & " + fName + ".bat " + " " + params };
-                p = runtime.exec( command );
-                dump( p.getInputStream() );
-                dump( p.getErrorStream() );
+                String command[] =
+                    { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & " + commandName + ".bat " + " " + params };
+                proc = runtime.exec( command );
+                dump( proc.getInputStream() );
+                dump( proc.getErrorStream() );
             }
             else
             {
-                String command[] = { "sh", "-c", "cd " + jbossHome + "/bin; ./" + fName + ".sh " + " " + params };
-                p = runtime.exec( command );
+                String command[] = { "sh", "-c", "cd " + jbossHome + "/bin; ./" + commandName + ".sh " + " " + params };
+                proc = runtime.exec( command );
             }
 
         }
         catch ( Exception e )
         {
-            throw new MojoExecutionException( "Mojo error occurred: " + e.getMessage(), e );
+            throw new MojoExecutionException( "Unable to execute command: " + e.getMessage(), e );
         }
     }
 

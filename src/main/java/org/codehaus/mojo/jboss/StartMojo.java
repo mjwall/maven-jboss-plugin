@@ -30,6 +30,11 @@ public class StartMojo
 {
 
     /**
+     * The command to start JBoss.
+     */
+    public static final String STARTUP_COMMAND = "run";
+    
+    /**
      * The set of options to pass to the JBoss "run" command.
      * @parameter default-value="" expression="${jboss.options}"
      */
@@ -49,7 +54,7 @@ public class StartMojo
             options = options + " -c " + serverName;
         }
         
-        launch( "run", options );
+        launch( STARTUP_COMMAND, options );
     }
 
 }
