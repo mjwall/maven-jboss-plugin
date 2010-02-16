@@ -82,14 +82,15 @@ public abstract class AbstractJBossMojo
             if ( osName.startsWith( "Windows" ) )
             {
                 String command[] =
-                    { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & " + commandName + ".bat " + " " + params };
+                    { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\" & " + commandName + ".bat " + " " + params };
                 proc = runtime.exec( command );
                 dump( proc.getInputStream() );
                 dump( proc.getErrorStream() );
             }
             else
             {
-                String command[] = { "sh", "-c", "cd " + jbossHome + "/bin; ./" + commandName + ".sh " + " " + params };
+                String command[] = 
+                    { "sh", "-c", "cd " + jbossHome + "/bin; export JBOSS_HOME=\"" + jbossHome + "\"; ./" + commandName + ".sh " + " " + params };
                 proc = runtime.exec( command );
             }
 
