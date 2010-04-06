@@ -82,7 +82,7 @@ public abstract class AbstractJBossMojo
             if ( osName.startsWith( "Windows" ) )
             {
                 String command[] =
-                    { "cmd.exe", "/C", "cd " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\" & " + commandName + ".bat " + " " + params };
+                    { "cmd.exe", "/C", "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\" & " + commandName + ".bat " + " " + params };
                 proc = runtime.exec( command );
                 dump( proc.getInputStream() );
                 dump( proc.getErrorStream() );
