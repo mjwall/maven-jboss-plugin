@@ -28,10 +28,13 @@ import java.util.Properties;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.jboss.security.SecurityAssociation;
+import org.jboss.security.SimplePrincipal;
 
 /**
  * Starts JBoss and waits until the server is started.
@@ -196,11 +199,19 @@ public class StartAndWaitMojo
         throws MojoExecutionException
     {
         Properties env = new Properties();
+        env.put( Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory" );
+        env.put( Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces" );
+        env.put( Context.PROVIDER_URL, hostName + ":" + namingPort );
+
+        String username = getUsername();
+        if ( username != null )
+        {
+            SecurityAssociation.setPrincipal( new SimplePrincipal( username ) );
+            SecurityAssociation.setCredential( getPassword() );
+        }
+                
         try
         {
-            env.put( "java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory" );
-            env.put( "java.naming.factory.url.pkgs", "org.jboss.naming:org.jnp.interfaces" );
-            env.put( "java.naming.provider.url", hostName + ":" + namingPort );
             return new InitialContext( env );
         }
         catch ( NamingException e )

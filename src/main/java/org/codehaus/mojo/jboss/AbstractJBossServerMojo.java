@@ -16,8 +16,11 @@ package org.codehaus.mojo.jboss;
  * limitations under the License.
  */
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.maven.artifact.manager.WagonManager;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +28,7 @@ import java.io.InputStream;
 /**
  * This class provides the general functionality for interacting with a local JBoss server.
  */
-public abstract class AbstractJBossMojo
+public abstract class AbstractJBossServerMojo
     extends AbstractMojo
 {
 
@@ -38,12 +41,34 @@ public abstract class AbstractJBossMojo
     protected String jbossHome;
 
     /**
-     * The name of the server profile to use when starting the server. This might be something like "all", "default", or
-     * "minimal".
+     * The name of the configuration profile to use when starting the server. This might be 
+     * something like "all", "default", or "minimal".
      * 
      * @parameter default-value="default" expression="${jboss.serverName}"
      */
     protected String serverName;
+
+    /**
+     * The set of options to pass to the JBoss "run" command.
+     * @parameter default-value="" expression="${jboss.options}"
+     */
+    protected String options;
+    
+    /**
+     * The Maven Wagon manager to use when obtaining server authentication details.
+     * 
+     * @component role="org.apache.maven.artifact.manager.WagonManager"
+     */
+    private WagonManager wagonManager;
+
+    /**
+     * The id of the server configuration found in Maven settings.xml.  This configuration
+     * will determine the username/password to use when authenticating with the JBoss server.
+     * If no value is specified, a default username and password will be used.
+     * 
+     * @parameter expression="${jboss.serverId}"
+     */
+    private String serverId;
 
     /**
      * Check that JBOSS_HOME is correctly configured.
@@ -121,5 +146,40 @@ public abstract class AbstractJBossMojo
             }
         } ).start();
     }
+
+    public String getUsername() throws MojoExecutionException
+    {
+        if ( serverId != null )
+        {
+            // obtain authenication details for specified server from wagon
+            AuthenticationInfo info = wagonManager.getAuthenticationInfo( serverId );
+            if ( info == null )
+            {
+                throw new MojoExecutionException( "Server not defined in settings.xml: " + serverId );
+            }
+
+            return info.getUserName();
+        }
+
+        return null;
+    }
+    
+    public String getPassword() throws MojoExecutionException
+    {
+        if ( serverId != null )
+        {
+            // obtain authenication details for specified server from wagon
+            AuthenticationInfo info = wagonManager.getAuthenticationInfo( serverId );
+            if ( info == null )
+            {
+                throw new MojoExecutionException( "Server not defined in settings.xml: " + serverId );
+            }
+
+            return info.getPassword();
+        }
+
+        return null;
+    }
+    
 
 }

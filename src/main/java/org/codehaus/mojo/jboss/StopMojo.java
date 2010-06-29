@@ -27,7 +27,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @requiresProject false
  */
 public class StopMojo
-    extends AbstractJBossMojo
+    extends AbstractJBossServerMojo
 {
 
     /**
@@ -58,7 +58,14 @@ public class StopMojo
     public void execute()
         throws MojoExecutionException
     {
-        launch( SHUTDOWN_COMMAND, options );
+        String credentials = "";
+        
+        if ( getUsername() != null )
+        {
+            credentials = " -u " + getUsername() + " -p " + getPassword();
+        }
+        
+        launch( SHUTDOWN_COMMAND, options + credentials );
 
         if ( stopWait > 0 )
         {

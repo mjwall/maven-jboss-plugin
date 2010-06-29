@@ -32,7 +32,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * @since 1.4
  */
 public class HardUnDeployMojo
-    extends AbstractJBossMojo
+    extends AbstractJBossServerMojo
 {
     /**
      * The names of the files or directories to undeploy. If this is set, the fileName parameter will be ignored.

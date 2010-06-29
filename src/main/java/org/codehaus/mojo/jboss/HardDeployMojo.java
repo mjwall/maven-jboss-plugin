@@ -35,7 +35,7 @@ import java.util.zip.ZipInputStream;
  * @since 1.4
  */
 public class HardDeployMojo
-    extends AbstractJBossMojo
+    extends AbstractJBossServerMojo
 {
 
     /**

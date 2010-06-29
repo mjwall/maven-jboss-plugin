@@ -33,7 +33,7 @@ import java.util.Properties;
  * @goal configure
  */
 public class ConfigureJBossMojo
-    extends AbstractJBossMojo
+    extends AbstractJBossServerMojo
 {
     private static final String SERVER_DIR_NAME = "server";
 

@@ -26,19 +26,13 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @requiresProject false
  */
 public class StartMojo
-    extends AbstractJBossMojo
+    extends AbstractJBossServerMojo
 {
 
     /**
      * The command to start JBoss.
      */
     public static final String STARTUP_COMMAND = "run";
-    
-    /**
-     * The set of options to pass to the JBoss "run" command.
-     * @parameter default-value="" expression="${jboss.options}"
-     */
-    protected String options;
     
     /**
      * Main plugin execution.
