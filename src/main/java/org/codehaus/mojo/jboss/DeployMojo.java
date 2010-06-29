@@ -29,7 +29,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal deploy
  */
 public class DeployMojo
-    extends AbstractDeployerMojo
+    extends AbstractJBossDeployerMojo
 {
     
     public static final String DEFAULT_DEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=deploy&argType=java.net.URL&arg0=";

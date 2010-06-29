@@ -27,7 +27,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal undeploy
  */
 public class UndeployMojo
-    extends AbstractDeployerMojo
+    extends AbstractJBossDeployerMojo
 {
     
     public static final String DEFAULT_UNDEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=undeploy&argType=java.net.URL&arg0=";

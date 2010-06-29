@@ -30,7 +30,7 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal redeploy
  */
 public class ReDeployMojo
-    extends AbstractDeployerMojo
+    extends AbstractJBossDeployerMojo
 {
 
     public static final String DEFAULT_REDEPLOY_URL = "/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.system:service%3DMainDeployer&methodName=redeploy&argType=java.net.URL&arg0=";

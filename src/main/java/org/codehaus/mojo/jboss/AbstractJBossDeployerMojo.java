@@ -31,7 +31,7 @@ import org.apache.maven.wagon.authentication.AuthenticationInfo;
 /**
  * Provides basic functionality for deploying an application over HTTP.
  */
-public abstract class AbstractDeployerMojo
+public abstract class AbstractJBossDeployerMojo
     extends AbstractMojo
 {
 
