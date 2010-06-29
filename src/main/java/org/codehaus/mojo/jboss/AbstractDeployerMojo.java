@@ -74,10 +74,11 @@ public abstract class AbstractDeployerMojo
     private WagonManager wagonManager;
 
     /**
-     * The server id found in Maven settings.xml to use when authenticating with the JBoss server, or <code>null</code>
-     * to use defaults.
+     * The id of the server configuration found in Maven settings.xml.  This configuration
+     * will determine the username/password to use when authenticating with the JBoss server.
+     * If no value is specified, a default username and password will be used.
      * 
-     * @parameter
+     * @parameter expression="${jboss.serverId}"
      */
     private String server;
 
@@ -126,7 +127,7 @@ public abstract class AbstractDeployerMojo
         if ( server == null )
         {
             // no server set, use defaults
-            getLog().info( "No server specified for authentication - using defaults" );
+            getLog().info( "No server id specified for authentication - using defaults" );
             userName = DEFAULT_USERNAME;
             password = DEFAULT_PASSWORD;
         }
@@ -139,7 +140,6 @@ public abstract class AbstractDeployerMojo
                 throw new MojoExecutionException( "Server not defined in settings.xml: " + server );
             }
 
-            // derive username
             userName = info.getUserName();
             if ( userName == null )
             {
@@ -147,7 +147,6 @@ public abstract class AbstractDeployerMojo
                 userName = DEFAULT_USERNAME;
             }
 
-            // derive password
             password = info.getPassword();
             if ( password == null )
             {
