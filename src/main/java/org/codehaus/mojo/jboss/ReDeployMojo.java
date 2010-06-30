@@ -59,7 +59,7 @@ public class ReDeployMojo
 
         // Note: the url path is set here instead of in the parameter default-value because of a parse error
         // when generating the project site.
-        if (redeployUrlPath == null )
+        if ( redeployUrlPath == null )
         {
             redeployUrlPath = DEFAULT_REDEPLOY_URL;
         }
