@@ -304,6 +304,7 @@ public class ConfigureJBossMojo
         context.put( "jbossServerHome", serverDir.getAbsolutePath() );
         context.put( "jbossHome", jbossHomeDir.getAbsolutePath() );
         context.put( "serverName", serverName );
+        context.put( "options", options );
         context.put( "javaOpts", javaOpts == null ? "" : javaOpts);
 
         String osName = System.getProperty( "os.name" );
