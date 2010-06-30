@@ -2,5 +2,5 @@
 
 @if "%OS%" == "Windows_NT" setlocal
 @set NOPAUSE=true
-@set JAVA_OPTS="-Djboss.server.home.dir=${jbossServerHome}" "-Djboss.server.home.url=file:${jbossServerHome}"
+@set JAVA_OPTS="${javaOpts} -Djboss.server.home.dir=${jbossServerHome}" "-Djboss.server.home.url=file:${jbossServerHome}"
 @call ${jbossHome}\bin\run.bat -c ${serverName}

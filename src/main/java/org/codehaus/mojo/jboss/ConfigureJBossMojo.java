@@ -56,22 +56,19 @@ public class ConfigureJBossMojo
     /**
      * The directory for overrides to the deploy directory.
      * 
-     * @parameter default-value="${basedir}/jboss/conf"
+     * @parameter default-value="${basedir}/jboss/deploy"
      */
     private File deployDir;
 
     /**
-     * @parameter default-value="${project.build.directory}/jboss
+     * @parameter default-value="${project.build.directory}/jboss"
      */
     protected File outputDirectory;
 
     /**
-     * Constructs a ConfigureJBossMojo.
+     * @parameter default-value=""
      */
-    public ConfigureJBossMojo()
-    {
-        super();
-    }
+    protected String javaOpts;
 
     /**
      * Main plugin execution.
@@ -307,6 +304,7 @@ public class ConfigureJBossMojo
         context.put( "jbossServerHome", serverDir.getAbsolutePath() );
         context.put( "jbossHome", jbossHomeDir.getAbsolutePath() );
         context.put( "serverName", serverName );
+        context.put( "javaOpts", javaOpts == null ? "" : javaOpts);
 
         String osName = System.getProperty( "os.name" );
 
