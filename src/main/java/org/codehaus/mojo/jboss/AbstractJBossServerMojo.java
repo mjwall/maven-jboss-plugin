@@ -103,26 +103,26 @@ public abstract class AbstractJBossServerMojo
         String osName = System.getProperty( "os.name" );
         Runtime runtime = Runtime.getRuntime();
         
+        String command [] = null;
+        if ( osName.startsWith( "Windows" ) )
+        {
+            command = new String []
+                { "cmd.exe", "/C", "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" 
+                  + jbossHome + "\" & " + commandName + ".bat " + " " + params };
+        }
+        else
+        {
+            command = new String []
+                { "sh", "-c", "cd " + jbossHome + "/bin; export JBOSS_HOME=\"" 
+                  + jbossHome + "\"; ./" + commandName + ".sh " + " " + params };
+        }
+        
         try
         {
-            Process proc = null;
-            if ( osName.startsWith( "Windows" ) )
-            {
-                String command[] =
-                    { "cmd.exe", "/C", "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" 
-                      + jbossHome + "\" & " + commandName + ".bat " + " " + params };
-                proc = runtime.exec( command );
-                dump( proc.getInputStream() );
-                dump( proc.getErrorStream() );
-            }
-            else
-            {
-                String command[] = 
-                    { "sh", "-c", "cd " + jbossHome + "/bin; export JBOSS_HOME=\"" 
-                      + jbossHome + "\"; ./" + commandName + ".sh " + " " + params };
-                proc = runtime.exec( command );
-            }
-
+            Process proc = runtime.exec( command );
+            dump( proc.getInputStream() );
+            dump( proc.getErrorStream() );
+                	
         }
         catch ( Exception e )
         {
@@ -130,6 +130,7 @@ public abstract class AbstractJBossServerMojo
         }
     }
 
+    // Dump output coming from the stream
     protected void dump( final InputStream input )
     {
         final int streamBufferSize = 1000;
@@ -185,6 +186,5 @@ public abstract class AbstractJBossServerMojo
 
         return null;
     }
-    
 
 }
