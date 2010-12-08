@@ -39,11 +39,11 @@ public class StopMojo
     public static final String SHUTDOWN_COMMAND = "shutdown";
 
     /**
-     * The set of options to pass to the JBoss "shutdown" command.
+     * The set of options to pass to the JBoss "run" command.
      * 
-     * @parameter default-value="" expression="${jboss.options}"
+     * @parameter default-value="" expression="${jboss.stopOptions}"
      */
-    protected String options;
+    protected String stopOptions;
 
     /**
      * Wait in ms for server to shutdown before the plugin returns.
@@ -54,6 +54,14 @@ public class StopMojo
     protected int stopWait;
 
     /**
+     * The set of options to pass to the JBoss "run" command.
+     * 
+     * @parameter default-value="" expression="${jboss.options}"
+     * @deprecated use stopOptions instead
+     */
+    protected String options;
+
+    /**
      * Main plugin execution.
      * 
      * @throws MojoExecutionException
@@ -61,6 +69,16 @@ public class StopMojo
     public void execute()
         throws MojoExecutionException
     {
+        if ( options == null )
+        {
+            options = "";
+        }
+        if ( stopOptions == null )
+        {
+            stopOptions = "";
+        }
+        stopOptions += options;
+        
         String credentials = "";
         
         if ( getUsername() != null )
@@ -68,7 +86,9 @@ public class StopMojo
             credentials = " -u " + getUsername() + " -p " + getPassword();
         }
         
-        launch( SHUTDOWN_COMMAND, options + credentials );
+        stopOptions += credentials;
+        
+        launch( SHUTDOWN_COMMAND, stopOptions );
 
         if ( stopWait > 0 )
         {

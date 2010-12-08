@@ -42,8 +42,6 @@ public class ConfigureJBossMojo
 {
     private static final String SERVER_DIR_NAME = "server";
 
-    private File jbossHomeDir;
-
     /**
      * The directory for overrides to the conf directory.
      * 
@@ -76,6 +74,13 @@ public class ConfigureJBossMojo
     protected String javaOpts;
 
     /**
+     * The set of options to pass to the JBoss "run" command.
+     * 
+     * @parameter default-value="" expression="${jboss.options}"
+     */
+    protected String options;
+
+    /**
      * Main plugin execution.
      * 
      * @throws MojoExecutionException
@@ -85,7 +90,6 @@ public class ConfigureJBossMojo
         throws MojoExecutionException, MojoFailureException
     {
         checkConfig();
-        jbossHomeDir = new File( jbossHome );
         checkJBossHome();
 
         File serverDir = new File( outputDirectory.getAbsolutePath() + File.separator + serverName );
@@ -108,17 +112,16 @@ public class ConfigureJBossMojo
     private void checkJBossHome()
         throws MojoFailureException
     {
-        if ( !jbossHomeDir.exists() )
+        if ( !jbossHome.exists() )
         {
             throw new MojoFailureException( "The jbossHome specifed does not exist." );
         }
 
-        File serverParentDir = new File( jbossHomeDir.getAbsolutePath() + File.separator + SERVER_DIR_NAME );
+        File serverParentDir = new File( jbossHome.getAbsolutePath() + File.separator + SERVER_DIR_NAME );
 
         if ( !serverParentDir.exists() )
         {
-            throw new MojoFailureException( jbossHomeDir.getAbsolutePath()
-                + " does not appear to be a valid jboss home" );
+            throw new MojoFailureException( jbossHome.getAbsolutePath() + " does not appear to be a valid jboss home" );
         }
 
         File serverDir = new File( serverParentDir.getAbsolutePath() + File.separator + serverName );
@@ -307,7 +310,7 @@ public class ConfigureJBossMojo
 
         VelocityContext context = new VelocityContext();
         context.put( "jbossServerHome", serverDir.getAbsolutePath() );
-        context.put( "jbossHome", jbossHomeDir.getAbsolutePath() );
+        context.put( "jbossHome", jbossHome.getAbsolutePath() );
         context.put( "serverName", serverName );
         context.put( "options", options );
         context.put( "javaOpts", javaOpts == null ? "" : javaOpts );

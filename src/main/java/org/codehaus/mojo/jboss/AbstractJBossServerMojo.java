@@ -24,6 +24,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -40,22 +41,16 @@ public abstract class AbstractJBossServerMojo
      * @parameter expression="${env.JBOSS_HOME}"
      * @required
      */
-    protected String jbossHome;
+    protected File jbossHome;
 
     /**
-     * The name of the configuration profile to use when starting the server. This might be 
-     * something like "all", "default", or "minimal".
+     * The name of the configuration profile to use when starting the server. This might be something like "all",
+     * "default", or "minimal".
      * 
      * @parameter default-value="default" expression="${jboss.serverName}"
      */
     protected String serverName;
 
-    /**
-     * The set of options to pass to the JBoss "run" command.
-     * @parameter default-value="" expression="${jboss.options}"
-     */
-    protected String options;
-    
     /**
      * The Maven Wagon manager to use when obtaining server authentication details.
      * 
@@ -64,9 +59,9 @@ public abstract class AbstractJBossServerMojo
     private WagonManager wagonManager;
 
     /**
-     * The id of the server configuration found in Maven settings.xml.  This configuration
-     * will determine the username/password to use when authenticating with the JBoss server.
-     * If no value is specified, a default username and password will be used.
+     * The id of the server configuration found in Maven settings.xml. This configuration will determine the
+     * username/password to use when authenticating with the JBoss server. If no value is specified, a default username
+     * and password will be used.
      * 
      * @parameter expression="${jboss.serverId}"
      */
@@ -81,11 +76,14 @@ public abstract class AbstractJBossServerMojo
         throws MojoExecutionException
     {
         getLog().debug( "Using JBOSS_HOME: " + jbossHome );
-        if ( jbossHome == null || jbossHome.equals( "" ) )
+        if ( jbossHome == null )
         {
-            throw new MojoExecutionException( "Neither JBOSS_HOME nor the jbossHome configuration parameter is set!" );
+            throw new MojoExecutionException( "Neither environment JBOSS_HOME nor the jbossHome configuration parameter is set!" );
         }
-
+        if ( ! jbossHome.exists() )
+        {
+            throw new MojoExecutionException( "Configured JBoss home directory does not exist: " + jbossHome );
+        }
     }
 
     /**
@@ -95,42 +93,53 @@ public abstract class AbstractJBossServerMojo
      * @param params - The command line parameters
      * @throws MojoExecutionException
      */
-    protected void launch( String commandName, String params )
+    protected void launch( String commandName, String options )
         throws MojoExecutionException
     {
-
         checkConfig();
         String osName = System.getProperty( "os.name" );
         Runtime runtime = Runtime.getRuntime();
-        
-        String command [] = null;
-        if ( osName.startsWith( "Windows" ) )
+
+        String fileSeparator = System.getProperty( "file.separator" );
+        String commandExt = osName.startsWith( "Windows" ) ? ".bat" : ".sh";
+        File jbossCommand = new File( jbossHome, "bin" + fileSeparator + commandName + commandExt );
+
+        if ( jbossCommand.exists() && jbossCommand.isFile() )
         {
-            command = new String []
-                { "cmd.exe", "/C", "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" 
-                  + jbossHome + "\" & " + commandName + ".bat " + " " + params };
+            String[] optionsArray = new String[0];
+            if ( options != null )
+            {
+                optionsArray = options.trim().split( "\\s+" );
+            }
+            String[] command = new String[optionsArray.length + 1];
+            try
+            {
+                command[0] = jbossCommand.getCanonicalPath();
+                for ( int i = 0; i < optionsArray.length; ++i )
+                {
+                    command[i + 1] = optionsArray[i];
+                }
+                Process proc = runtime.exec( command );
+                dump( proc.getInputStream() );
+                dump( proc.getErrorStream() );
+            }
+            catch ( IOException e )
+            {
+                throw new MojoExecutionException( "Unable to execute command: " + jbossCommand.toString(), e );
+            }
         }
         else
         {
-            command = new String []
-                { "sh", "-c", "cd " + jbossHome + "/bin; export JBOSS_HOME=\"" 
-                  + jbossHome + "\"; ./" + commandName + ".sh " + " " + params };
-        }
-        
-        try
-        {
-            Process proc = runtime.exec( command );
-            dump( proc.getInputStream() );
-            dump( proc.getErrorStream() );
-                	
-        }
-        catch ( Exception e )
-        {
-            throw new MojoExecutionException( "Unable to execute command: " + e.getMessage(), e );
+            throw new MojoExecutionException( "JBoss command '" + commandName + "' at " + jbossCommand.toString()
+                + " is not an executable program" );
         }
     }
 
-    // Dump output coming from the stream
+    /**
+     * Dump output coming from the stream
+     * 
+     * @param input The input stream to dump
+     */
     protected void dump( final InputStream input )
     {
         final int streamBufferSize = 1000;
@@ -153,7 +162,14 @@ public abstract class AbstractJBossServerMojo
         } ).start();
     }
 
-    public String getUsername() throws MojoExecutionException
+    /**
+     * Get the username configured in the Maven settings.xml
+     * 
+     * @return username
+     * @throws MojoExecutionException if the server is not configured in settings.xml
+     */
+    public String getUsername()
+        throws MojoExecutionException
     {
         if ( serverId != null )
         {
@@ -169,8 +185,15 @@ public abstract class AbstractJBossServerMojo
 
         return null;
     }
-    
-    public String getPassword() throws MojoExecutionException
+
+    /**
+     * Get the password configured in Maven settings.xml
+     * 
+     * @return The password from settings.xml
+     * @throws MojoExecutionException if the server is not configured in settings.xml
+     */
+    public String getPassword()
+        throws MojoExecutionException
     {
         if ( serverId != null )
         {

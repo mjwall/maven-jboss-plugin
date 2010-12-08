@@ -38,6 +38,21 @@ public class StartMojo
     public static final String STARTUP_COMMAND = "run";
     
     /**
+     * The set of options to pass to the JBoss "run" command.
+     * 
+     * @parameter default-value="" expression="${jboss.startOptions}"
+     */
+    protected String startOptions;
+
+    /**
+     * The set of options to pass to the JBoss "run" command.
+     * 
+     * @parameter default-value="" expression="${jboss.options}"
+     * @deprecated use startOptions instead
+     */
+    protected String options;
+
+    /**
      * Main plugin execution.
      * 
      * @throws MojoExecutionException
@@ -45,13 +60,23 @@ public class StartMojo
     public void execute()
         throws MojoExecutionException
     {
-        getLog().info( "Starting JBoss..." );
+        if ( options == null )
+        {
+            options = "";
+        }
+        if ( startOptions == null )
+        {
+            startOptions = "";
+        }
+        startOptions += options;
+        
         if ( ! serverName.equals( "default" ) )
         {
-            options = options + " -c " + serverName;
+            startOptions += " -c " + serverName;
         }
         
-        launch( STARTUP_COMMAND, options );
+        getLog().info( "Starting JBoss..." );
+        launch( STARTUP_COMMAND, startOptions );
     }
 
 }
