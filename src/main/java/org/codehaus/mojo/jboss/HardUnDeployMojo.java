@@ -76,7 +76,7 @@ public class HardUnDeployMojo
             }
             if ( nextFile.delete() )
             {
-                getLog().info( "File " + nextFile.getName() + " undeployed!\nhave a nice day!" );
+                getLog().info( "File " + nextFile.getName() + " undeployed." );
             }
         }
     }
