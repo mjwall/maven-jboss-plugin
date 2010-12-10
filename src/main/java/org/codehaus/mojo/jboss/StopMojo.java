@@ -41,7 +41,7 @@ public class StopMojo
     /**
      * The set of options to pass to the JBoss "run" command.
      * 
-     * @parameter default-value="" expression="${jboss.stopOptions}"
+     * @parameter default-value="-S" expression="${jboss.stopOptions}"
      */
     protected String stopOptions;
 
@@ -69,15 +69,10 @@ public class StopMojo
     public void execute()
         throws MojoExecutionException
     {
-        if ( options == null )
+        if ( options != null && !options.equals("") )
         {
-            options = "";
+            stopOptions = options;
         }
-        if ( stopOptions == null )
-        {
-            stopOptions = "";
-        }
-        stopOptions += options;
         
         String credentials = "";
         

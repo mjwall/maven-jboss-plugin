@@ -78,9 +78,9 @@ public abstract class AbstractJBossServerMojo
         getLog().debug( "Using JBOSS_HOME: " + jbossHome );
         if ( jbossHome == null )
         {
-            throw new MojoExecutionException( "Neither environment JBOSS_HOME nor the jbossHome configuration parameter is set!" );
+            throw new MojoExecutionException( "Neither environment JBOSS_HOME nor the jbossHome parameter is set!" );
         }
-        if ( ! jbossHome.exists() )
+        if ( !jbossHome.exists() )
         {
             throw new MojoExecutionException( "Configured JBoss home directory does not exist: " + jbossHome );
         }
@@ -97,41 +97,43 @@ public abstract class AbstractJBossServerMojo
         throws MojoExecutionException
     {
         checkConfig();
+
         String osName = System.getProperty( "os.name" );
-        Runtime runtime = Runtime.getRuntime();
-
-        String fileSeparator = System.getProperty( "file.separator" );
         String commandExt = osName.startsWith( "Windows" ) ? ".bat" : ".sh";
-        File jbossCommand = new File( jbossHome, "bin" + fileSeparator + commandName + commandExt );
+        String jbossCommand = commandName + commandExt;
+        File jbossHomeBin = new File( jbossHome, "bin" );
+        File jbossCommandFile = new File( jbossHomeBin, jbossCommand );
 
-        if ( jbossCommand.exists() && jbossCommand.isFile() )
+        if ( !jbossCommandFile.isFile() )
         {
-            String[] optionsArray = new String[0];
-            if ( options != null )
-            {
-                optionsArray = options.trim().split( "\\s+" );
-            }
-            String[] command = new String[optionsArray.length + 1];
-            try
-            {
-                command[0] = jbossCommand.getCanonicalPath();
-                for ( int i = 0; i < optionsArray.length; ++i )
-                {
-                    command[i + 1] = optionsArray[i];
-                }
-                Process proc = runtime.exec( command );
-                dump( proc.getInputStream() );
-                dump( proc.getErrorStream() );
-            }
-            catch ( IOException e )
-            {
-                throw new MojoExecutionException( "Unable to execute command: " + jbossCommand.toString(), e );
-            }
-        }
-        else
-        {
-            throw new MojoExecutionException( "JBoss command '" + commandName + "' at " + jbossCommand.toString()
+            throw new MojoExecutionException( "JBoss command '" + commandName + "' at " + jbossCommandFile.toString()
                 + " is not an executable program" );
+        }
+
+        String[] optionsArray = new String[0];
+        if ( options != null )
+        {
+            optionsArray = options.trim().split( "\\s+" );
+        }
+        String[] commandWithOptions = new String[optionsArray.length + 1];
+
+        String[] env = new String[] { "JBOSS_HOME=" + jbossHome.getAbsolutePath() };
+        Runtime runtime = Runtime.getRuntime();
+        try
+        {
+            commandWithOptions[0] = jbossCommandFile.getCanonicalPath();
+            for ( int i = 0; i < optionsArray.length; ++i )
+            {
+                commandWithOptions[i + 1] = optionsArray[i];
+            }
+            getLog().debug( "Executing JBoss command: " + commandWithOptions[0] + " " + options );
+            Process proc = runtime.exec( commandWithOptions, env, jbossHomeBin );
+            dump( proc.getInputStream() );
+            dump( proc.getErrorStream() );
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to execute command: " + jbossCommandFile.toString(), e );
         }
     }
 
