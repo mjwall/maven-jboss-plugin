@@ -69,14 +69,14 @@ public class ConfigureJBossMojo
     protected File outputDirectory;
 
     /**
-     * @parameter default-value=""
+     * @parameter expression="${jboss.javaOpts}"
      */
     protected String javaOpts;
 
     /**
      * The set of options to pass to the JBoss "run" command.
      * 
-     * @parameter default-value="" expression="${jboss.options}"
+     * @parameter expression="${jboss.options}"
      */
     protected String options;
 
@@ -312,7 +312,7 @@ public class ConfigureJBossMojo
         context.put( "jbossServerHome", serverDir.getAbsolutePath() );
         context.put( "jbossHome", jbossHome.getAbsolutePath() );
         context.put( "serverName", serverName );
-        context.put( "options", options );
+        context.put( "options", options == null ? "" : options  );
         context.put( "javaOpts", javaOpts == null ? "" : javaOpts );
 
         String osName = System.getProperty( "os.name" );
