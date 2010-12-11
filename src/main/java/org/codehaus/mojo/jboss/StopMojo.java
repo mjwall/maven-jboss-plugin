@@ -42,6 +42,7 @@ public class StopMojo
      * The set of options to pass to the JBoss "run" command.
      * 
      * @parameter default-value="-S" expression="${jboss.stopOptions}"
+     * @since 1.5.0
      */
     protected String stopOptions;
 

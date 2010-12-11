@@ -41,6 +41,7 @@ public class StartMojo
      * The set of options to pass to the JBoss "run" command.
      * 
      * @parameter default-value="" expression="${jboss.startOptions}"
+     * @since 1.5.0
      */
     protected String startOptions;
 
