@@ -20,9 +20,10 @@ package org.codehaus.mojo.jboss;
  */
 
 import java.io.File;
+import java.io.IOException;
 
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
+import org.codehaus.plexus.util.FileUtils;
 
 /**
  * Delete file form <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
@@ -55,7 +56,7 @@ public class HardUnDeployMojo
      * @throws MojoExecutionException
      */
     public void execute()
-        throws MojoExecutionException, MojoFailureException
+        throws MojoExecutionException
     {
         checkConfig();
 
@@ -68,15 +69,35 @@ public class HardUnDeployMojo
         for ( int i = 0; i < fileNames.length; ++i )
         {
             File nextFile = new File( jbossHome + "/server/" + serverName + "/deploy/" + fileNames[i].getName() );
-            getLog().info( "Undeploy file: " + nextFile.getName() );
+            getLog().debug( "Undeploy file: " + nextFile.getName() );
             if ( !nextFile.exists() )
             {
                 getLog().info( "File " + nextFile.getAbsolutePath() + " doesn't exist!" );
                 return;
             }
-            if ( nextFile.delete() )
+            if ( nextFile.isFile() )
             {
-                getLog().info( "File " + nextFile.getName() + " undeployed." );
+                if ( nextFile.delete() )
+                {
+                    getLog().info( "File " + nextFile.getName() + " undeployed." );
+                }
+                else
+                {
+                    getLog().warn( "Unable to delete file: " + nextFile );
+                }
+            }
+            else if ( nextFile.isDirectory() )
+            {
+                try
+                {
+                    FileUtils.deleteDirectory( nextFile );
+                    getLog().info( "Directory " + nextFile.getName() + " undeployed." );
+                }
+                catch ( IOException e )
+                {
+                    getLog().warn( "Unable to delete directory: " + nextFile );
+                    getLog().warn( e.getMessage() );
+                }
             }
         }
     }
