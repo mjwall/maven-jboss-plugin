@@ -80,7 +80,7 @@ public abstract class AbstractJBossServerMojo
         {
             throw new MojoExecutionException( "Neither environment JBOSS_HOME nor the jbossHome parameter is set!" );
         }
-        if ( !jbossHome.exists() )
+        if ( !jbossHome.isDirectory() )
         {
             throw new MojoExecutionException( "Configured JBoss home directory does not exist: " + jbossHome );
         }
@@ -110,31 +110,74 @@ public abstract class AbstractJBossServerMojo
                 + " is not an executable program" );
         }
 
+        getLog().debug( "Executing JBoss command: " + jbossCommandFile + " " + options );
+        try
+        {
+            if ( osName.startsWith( "Windows" ) )
+            {
+                launchWindowsBatch( jbossCommandFile, options );
+            }
+            else
+            {
+                launchUnixScript( jbossCommandFile, options );
+            }
+        }
+        catch ( IOException e )
+        {
+            throw new MojoExecutionException( "Unable to execute command: " + jbossCommandFile.toString(), e );
+        }
+    }
+
+    /**
+     * Launch a batch file in Windows
+     * 
+     * @param commandFile
+     * @param options
+     * @throws IOException
+     */
+    protected void launchWindowsBatch( File commandFile, String options )
+        throws IOException
+    {
+        // Windows does not allow batch files to be called directly, so must use cmd.exe
+        String[] commandWithOptions =
+            new String[] {
+                "cmd.exe",
+                "/C",
+                "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\" & " + commandFile.getName() + " "
+                    + options };
+
+        // Windows did not accept env config during testing, so JBOSS_HOME is set in the command
+        Process proc = Runtime.getRuntime().exec( commandWithOptions );
+        dump( proc.getInputStream() );
+        dump( proc.getErrorStream() );
+    }
+
+    /**
+     * Launch a Unix shell script
+     * 
+     * @param commandFile
+     * @param options
+     * @throws IOException
+     */
+    protected void launchUnixScript( File commandFile, String options )
+        throws IOException
+    {
         String[] optionsArray = new String[0];
         if ( options != null )
         {
             optionsArray = options.trim().split( "\\s+" );
         }
         String[] commandWithOptions = new String[optionsArray.length + 1];
-
+        commandWithOptions[0] = commandFile.getAbsolutePath();
+        for ( int i = 0; i < optionsArray.length; ++i )
+        {
+            commandWithOptions[i + 1] = optionsArray[i];
+        }
         String[] env = new String[] { "JBOSS_HOME=" + jbossHome.getAbsolutePath() };
-        Runtime runtime = Runtime.getRuntime();
-        try
-        {
-            commandWithOptions[0] = jbossCommandFile.getCanonicalPath();
-            for ( int i = 0; i < optionsArray.length; ++i )
-            {
-                commandWithOptions[i + 1] = optionsArray[i];
-            }
-            getLog().debug( "Executing JBoss command: " + commandWithOptions[0] + " " + options );
-            Process proc = runtime.exec( commandWithOptions, env, jbossHomeBin );
-            dump( proc.getInputStream() );
-            dump( proc.getErrorStream() );
-        }
-        catch ( IOException e )
-        {
-            throw new MojoExecutionException( "Unable to execute command: " + jbossCommandFile.toString(), e );
-        }
+
+        Process proc = Runtime.getRuntime().exec( commandWithOptions, env, commandFile.getParentFile() );
+        dump( proc.getInputStream() );
+        dump( proc.getErrorStream() );
     }
 
     /**
