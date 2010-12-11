@@ -105,7 +105,7 @@ public class StartAndWaitMojo
         {
             File policyFile = File.createTempFile( "jboss-client", ".policy" );
             policyFile.deleteOnExit();
-            this.writeSecurityPolicy( policyFile );
+            JBossServerUtil.writeSecurityPolicy( policyFile );
             // Get the canonical file which expands the shortened directory names in Windows
             policyFile = policyFile.getCanonicalFile();
             System.setProperty( "java.security.policy", policyFile.toURI().toString() );
@@ -220,19 +220,4 @@ public class StartAndWaitMojo
         }
     }
 
-    /**
-     * Create a policyFile that will allow the plugin to execute remote RMI code.
-     * 
-     * @param policyFile
-     * @throws IOException
-     */
-    public void writeSecurityPolicy( File policyFile )
-        throws IOException
-    {
-        PrintWriter writer = new PrintWriter( new FileWriter( policyFile ) );
-        writer.println( "grant {" );
-        writer.println( "    permission java.security.AllPermission;" );
-        writer.println( "};" );
-        writer.close();
-    }
 }

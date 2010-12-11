@@ -26,7 +26,6 @@ import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class provides the general functionality for interacting with a local JBoss server.
@@ -148,8 +147,8 @@ public abstract class AbstractJBossServerMojo
 
         // Windows did not accept env config during testing, so JBOSS_HOME is set in the command
         Process proc = Runtime.getRuntime().exec( commandWithOptions );
-        dump( proc.getInputStream() );
-        dump( proc.getErrorStream() );
+        JBossServerUtil.dump( proc.getInputStream() );
+        JBossServerUtil.dump( proc.getErrorStream() );
     }
 
     /**
@@ -176,35 +175,8 @@ public abstract class AbstractJBossServerMojo
         String[] env = new String[] { "JBOSS_HOME=" + jbossHome.getAbsolutePath() };
 
         Process proc = Runtime.getRuntime().exec( commandWithOptions, env, commandFile.getParentFile() );
-        dump( proc.getInputStream() );
-        dump( proc.getErrorStream() );
-    }
-
-    /**
-     * Dump output coming from the stream
-     * 
-     * @param input The input stream to dump
-     */
-    protected void dump( final InputStream input )
-    {
-        final int streamBufferSize = 1000;
-        new Thread( new Runnable()
-        {
-            public void run()
-            {
-                try
-                {
-                    byte[] b = new byte[streamBufferSize];
-                    while ( ( input.read( b ) ) != -1 )
-                    {
-                    }
-                }
-                catch ( IOException e )
-                {
-                    e.printStackTrace();
-                }
-            }
-        } ).start();
+        JBossServerUtil.dump( proc.getInputStream() );
+        JBossServerUtil.dump( proc.getErrorStream() );
     }
 
     /**
