@@ -77,13 +77,24 @@ public abstract class AbstractJBossDeployerMojo
     private WagonManager wagonManager;
 
     /**
-     * The id of the server configuration found in Maven settings.xml.  This configuration
-     * will determine the username/password to use when authenticating with the JBoss server.
-     * If no value is specified, a default username and password will be used.
+     * The id of the server configuration found in Maven settings.xml. This configuration will determine the
+     * username/password to use when authenticating with the JBoss server. If no value is specified, a default username
+     * and password will be used.
      * 
-     * @parameter expression="${jboss.serverId}"
+     * @parameter
+     * @deprecated Use serverId instead
      */
     private String server;
+
+    /**
+     * The id of the server configuration found in Maven settings.xml. This configuration will determine the
+     * username/password to use when authenticating with the JBoss server. If no value is specified, a default username
+     * and password will be used.
+     * 
+     * @parameter expression="${jboss.serverId}"
+     * @since 1.5.0
+     */
+    private String serverId;
 
     /**
      * Open a URL.
@@ -127,7 +138,12 @@ public abstract class AbstractJBossDeployerMojo
         String userName;
         String password;
 
-        if ( server == null )
+        if ( serverId == null || serverId.equals( "" ) )
+        {
+            serverId = server;
+        }
+
+        if ( serverId == null )
         {
             // no server set, use defaults
             getLog().info( "No server id specified for authentication - using defaults" );
@@ -137,10 +153,10 @@ public abstract class AbstractJBossDeployerMojo
         else
         {
             // obtain authenication details for specified server from wagon
-            AuthenticationInfo info = wagonManager.getAuthenticationInfo( server );
+            AuthenticationInfo info = wagonManager.getAuthenticationInfo( serverId );
             if ( info == null )
             {
-                throw new MojoExecutionException( "Server not defined in settings.xml: " + server );
+                throw new MojoExecutionException( "Server not defined in settings.xml: " + serverId );
             }
 
             userName = info.getUserName();
