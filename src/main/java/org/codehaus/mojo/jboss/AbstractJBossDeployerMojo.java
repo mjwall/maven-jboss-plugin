@@ -97,6 +97,40 @@ public abstract class AbstractJBossDeployerMojo
     private String serverId;
 
     /**
+     * Skip the mojo execution.
+     * 
+     * @parameter default-value="false" expression="${jboss.skip}"
+     */
+    protected boolean skip;
+
+    /**
+     * Main common deploy mojo execution
+     */
+    public void execute()
+        throws MojoExecutionException
+    {
+        if ( skip )
+        {
+            getLog().debug( "Skipping execution of jboss-maven-plugin" );
+            return;
+        }
+
+        if ( fileNames == null )
+        {
+            getLog().info( "No files configured to deploy/undeploy." );
+            return;
+        }
+
+        doExecute();
+    }
+
+    /**
+     * Mojo specific execution implemented by subclasses
+     */
+    protected abstract void doExecute()
+        throws MojoExecutionException;
+
+    /**
      * Open a URL.
      * 
      * @param url

@@ -47,15 +47,9 @@ public class ReDeployMojo
      * 
      * @throws MojoExecutionException
      */
-    public void execute()
+    public void doExecute()
         throws MojoExecutionException
     {
-
-        if ( fileNames == null )
-        {
-            getLog().info( "No files configured to deploy." );
-            return;
-        }
 
         // Note: the url path is set here instead of in the parameter default-value because of a parse error
         // when generating the project site.
