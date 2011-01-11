@@ -100,6 +100,7 @@ public abstract class AbstractJBossDeployerMojo
      * Skip the mojo execution.
      * 
      * @parameter default-value="false" expression="${jboss.skip}"
+     * @since 1.5.0
      */
     protected boolean skip;
 
