@@ -38,7 +38,7 @@ public class StartMojo
     public static final String STARTUP_COMMAND = "run";
     
     /**
-     * The set of options to pass to the JBoss "run" command.
+     * The set of space separated options to pass to the JBoss "run" command.
      * 
      * @parameter default-value="" expression="${jboss.startOptions}"
      * @since 1.5.0

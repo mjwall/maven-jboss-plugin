@@ -89,7 +89,7 @@ public abstract class AbstractJBossServerMojo
      * Call the JBoss startup or shutdown script.
      * 
      * @param commandName - The name of the command to run
-     * @param params - The command line parameters
+     * @param options - Space separated command line parameters
      * @throws MojoExecutionException
      */
     protected void launch( String commandName, String options )
@@ -131,7 +131,7 @@ public abstract class AbstractJBossServerMojo
      * Launch a batch file in Windows
      * 
      * @param commandFile
-     * @param options
+     * @param options - Space separated command line parameters
      * @throws IOException
      */
     protected void launchWindowsBatch( File commandFile, String options )
@@ -155,7 +155,7 @@ public abstract class AbstractJBossServerMojo
      * Launch a Unix shell script
      * 
      * @param commandFile
-     * @param options
+     * @param options - Space separated command line parameters
      * @throws IOException
      */
     protected void launchUnixScript( File commandFile, String options )
