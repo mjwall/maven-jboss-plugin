@@ -142,7 +142,7 @@ public abstract class AbstractJBossServerMojo
             new String[] {
                 "cmd.exe",
                 "/C",
-                "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\" & " + commandFile.getName() + " "
+                "cd /D " + jbossHome + "\\bin & set JBOSS_HOME=\"" + jbossHome + "\"&" + commandFile.getName() + " "
                     + options };
 
         // Windows did not accept env config during testing, so JBOSS_HOME is set in the command
