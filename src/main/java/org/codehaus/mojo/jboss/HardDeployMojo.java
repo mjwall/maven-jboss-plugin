@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -64,7 +66,8 @@ public class HardDeployMojo
     protected String deploySubDir;
 
     /**
-     * A boolean indicating if the artifact should be unpacked when deployed
+     * A boolean indicating if the artifact should be unpacked when deployed.  This will
+     * only affect files that are unpackable (i.e. zip, jar, etc)
      * 
      * @parameter default-value="false"
      */
@@ -146,7 +149,7 @@ public class HardDeployMojo
     private void copyFile( File src, File dst )
         throws IOException
     {
-        if ( unpack )
+        if ( unpack && isUnpackable( src ) )
         {
             unpack( src, dst );
         }
@@ -160,6 +163,35 @@ public class HardDeployMojo
             in.close();
             out.close();
         }
+    }
+
+    /**
+     * Check if the file can be unpacked using zip format
+     * 
+     * @param file
+     * @return true if the file is zip format
+     * @throws IOException
+     */
+    private boolean isUnpackable( File file )
+        throws IOException
+    {
+        ZipFile zfile = null;
+        try
+        {
+            zfile = new ZipFile( file );
+        }
+        catch ( ZipException ze )
+        {
+            return false;
+        }
+        finally
+        {
+            if ( zfile != null )
+            {
+                zfile.close();
+            }
+        }
+        return true;
     }
 
     private void streamcopy( InputStream in, OutputStream out )
