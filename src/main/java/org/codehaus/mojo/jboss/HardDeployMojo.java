@@ -66,8 +66,8 @@ public class HardDeployMojo
     protected String deploySubDir;
 
     /**
-     * A boolean indicating if the artifact should be unpacked when deployed.  This will
-     * only affect files that are unpackable (i.e. zip, jar, etc)
+     * A boolean indicating if the artifact should be unpacked when deployed. This will only affect files that are
+     * unpackable (i.e. zip, jar, etc)
      * 
      * @parameter default-value="false"
      */
@@ -111,8 +111,7 @@ public class HardDeployMojo
                 File src = new File( fixedFile );
                 File dst = new File( jbossHome + "/server/" + serverName + deployDir + src.getName() );
 
-                getLog().info(
-                               ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to "
+                getLog().info( ( unpack ? "Unpacking " : "Copying " ) + src.getAbsolutePath() + " to "
                                    + dst.getAbsolutePath() );
                 copy( src, dst );
             }
