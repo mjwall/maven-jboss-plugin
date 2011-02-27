@@ -26,7 +26,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.util.FileUtils;
 
 /**
- * Delete file form <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
+ * Delete files from <code>$JBOSS_HOME/server/[serverName]/deploy</code> directory.
  * 
  * @author <a href="mailto:bjkuczynski@gmial.com">Bartek 'Koziolek' Kuczynski</a>
  * @goal hard-undeploy
@@ -72,7 +72,7 @@ public class HardUnDeployMojo
             getLog().debug( "Undeploy file: " + nextFile.getName() );
             if ( !nextFile.exists() )
             {
-                getLog().info( "File " + nextFile.getAbsolutePath() + " doesn't exist!" );
+                getLog().debug( "File " + nextFile.getAbsolutePath() + " doesn't exist." );
                 return;
             }
             if ( nextFile.isFile() )
