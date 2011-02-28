@@ -20,6 +20,8 @@ package org.codehaus.mojo.jboss;
  */
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.FileUtils;
+import org.codehaus.plexus.util.IOUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -154,13 +156,7 @@ public class HardDeployMojo
         }
         else
         {
-            InputStream in = new FileInputStream( src );
-            OutputStream out = new FileOutputStream( dst );
-
-            streamcopy( in, out );
-
-            in.close();
-            out.close();
+            FileUtils.copyFile( src, dst );
         }
     }
 
@@ -193,18 +189,6 @@ public class HardDeployMojo
         return true;
     }
 
-    private void streamcopy( InputStream in, OutputStream out )
-        throws IOException
-    {
-        // Transfer bytes from in to out
-        byte[] buf = new byte[1024];
-        int len;
-        while ( ( len = in.read( buf ) ) > 0 )
-        {
-            out.write( buf, 0, len );
-        }
-    }
-
     public void unpack( File zipFile, File targetDir )
         throws IOException
     {
@@ -225,7 +209,7 @@ public class HardDeployMojo
             new File( file ).getParentFile().getCanonicalFile().mkdirs();
 
             FileOutputStream out = new FileOutputStream( file );
-            streamcopy( zipIn, out );
+            IOUtil.copy( zipIn, out );
             out.close();
         }
         zipIn.close();
