@@ -35,6 +35,7 @@ import javax.naming.NamingException;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.jboss.security.SecurityAssociation;
 import org.jboss.security.SimplePrincipal;
+import org.jnp.interfaces.NamingContext;
 
 /**
  * Starts JBoss and waits until the server is started.
@@ -202,6 +203,7 @@ public class StartAndWaitMojo
         env.put( Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory" );
         env.put( Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces" );
         env.put( Context.PROVIDER_URL, hostName + ":" + namingPort );
+        env.put( NamingContext.JNP_DISABLE_DISCOVERY, "true" );
 
         String username = getUsername();
         if ( username != null )
