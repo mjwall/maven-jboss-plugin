@@ -61,7 +61,7 @@ Usage
 +---------
   
   More information about plugin options and starting and stopping the server
-  can be found on the {{{examples/start-stop-examples.html}examples page}}.
+  can be found on the {{{./examples/start-stop-examples.html}examples page}}.
 
 
 * Deploying and Undeploying Applications
@@ -82,6 +82,6 @@ Usage
 +---------
   
   More information the deploy and undeploy goals can be found on the 
-  {{{examples/deploy-undeploy-examples.html}examples page}}.
+  {{{./examples/deploy-undeploy-examples.html}examples page}}.
   
   
