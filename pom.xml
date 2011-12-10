@@ -9,7 +9,7 @@
   <artifactId>jboss-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>JBoss Maven Plugin</name>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.1-mjwall-1</version>
   <description> This plugin manages the ability start/stop JBoss and deploy/undeploy
     applications via JMX. </description>
   <prerequisites>
