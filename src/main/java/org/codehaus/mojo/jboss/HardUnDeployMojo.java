@@ -49,6 +49,14 @@ public class HardUnDeployMojo
      * @parameter default-value="${project.build.directory}/${project.build.finalName}.${project.packaging}"
      */
     protected File fileName;
+    
+    /**
+      * Skip the mojo execution.
+      * 
+      * @parameter default-value="false" expression="${jboss.skip}"
+      * @since 1.5.1
+      */
+     protected boolean skip;
 
     /**
      * Main plugin execution.
@@ -58,6 +66,12 @@ public class HardUnDeployMojo
     public void execute()
         throws MojoExecutionException
     {
+        if ( skip )
+        {
+            getLog().debug( "Skipping execution of jboss-maven-plugin" );
+            return;
+        }
+        
         checkConfig();
 
         if ( fileNames == null || fileNames.length == 0 )
