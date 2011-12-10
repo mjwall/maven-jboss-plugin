@@ -1,0 +1,8 @@
+This is my fork of the jboss maven plugin.  I forked it because there was no
+skip option when using hard-deploy and hard-undeploy.  That makes using it in
+multi module maven project tough if not every module needs to be deployed.
+
+I submitted a ticket at http://jira.codehaus.org/browse/MJBOSS-63 and a patch.
+
+If you want to use this plugin, you'll need to install it into your .m2.  The
+easiest way is with the following command:
