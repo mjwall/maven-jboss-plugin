@@ -15,20 +15,18 @@ version.
 If you want to use this plugin, the best way is to clone this repo, make
 sure you are in the "mjwall" branch and then run the following
 
-`mvn clean install`
+    mvn clean install
 
 You can then define this version in your pom like so:
 
-<blockquote>
-<plugin>
-  <groupId>org.codehaus.mojo</groupId>
-  <artifactId>jboss-maven-plugin</artifactId>
-  <version>1.5.1-mjwall-1</version>
-  <configuration>
-    ...etc...
-  </configuration>
-</plugin>
-</blockquote>
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>jboss-maven-plugin</artifactId>
+      <version>1.5.1-mjwall-1</version>
+      <configuration>
+        ...etc...
+      </configuration>
+    </plugin>
 
 For more information about the other options in the jboss-maven-plugin, see
 http://mojo.codehaus.org/jboss-maven-plugin/
