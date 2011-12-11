@@ -19,14 +19,16 @@ sure you are in the "mjwall" branch and then run the following
 
 You can then define this version in your pom like so:
 
-`<plugin>
+<blockquote>
+<plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>jboss-maven-plugin</artifactId>
   <version>1.5.1-mjwall-1</version>
   <configuration>
     ...etc...
   </configuration>
-</plugin>`
+</plugin>
+</blockquote>
 
 For more information about the other options in the jboss-maven-plugin, see
 http://mojo.codehaus.org/jboss-maven-plugin/
